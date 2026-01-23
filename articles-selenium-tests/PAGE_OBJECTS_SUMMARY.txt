@@ -1,0 +1,193 @@
+================================================================================
+                    PAGE OBJECTS - KREIRANI FAJLOVI
+================================================================================
+
+LOKACIJA: /Users/nilic/IdeaProjects/pmf-project-nilic/articles-selenium-tests/
+PAKET: rs.pmf.selenium.pages
+
+================================================================================
+                          KREIRANE KLASE
+================================================================================
+
+1. LandingPage.java (230 linija)
+   └─ Početna stranica sa "Let's Start" dugmeta
+   └─ 20+ metoda za interakciju sa početnom stranicom
+   └─ Footer informacije, verzija, language/theme opcije
+
+2. ArticlesPage.java (289 linija)
+   └─ Prikaz liste članaka
+   └─ 25+ metoda za navigaciju, pretragu, sortiranje, paginaciju
+   └─ Pronalaženje, preuzimanje informacija o člancima
+   └─ Prebacivanje na Comments tab
+
+3. CommentsPage.java (276 linija)
+   └─ Prikaz liste komentara
+   └─ 25+ metoda za sličnu funkcionalnost kao ArticlesPage
+   └─ Pronalaženje, preuzimanje informacija o komentarima
+   └─ Prebacivanje na Articles tab
+
+4. SingleArticlePage.java (250 linija)
+   └─ Detalji pojedinačnog članka
+   └─ 20+ metoda za rad sa:
+      └─ Naslovom, sikom, metapodacima
+      └─ Sadržajem članka
+      └─ Opcijama za preuzimanje (CSV, JSON, PDF)
+      └─ Povratkom na listu članaka
+
+5. SingleCommentPage.java (227 linija)
+   └─ Detalji pojedinačnog komentara
+   └─ 20+ metoda za rad sa:
+      └─ Tekstom komentara, autorstvom, datumom
+      └─ Linkom na članak na kojem je komentar
+      └─ Povratkom na listu komentara
+
+6. PageObjectExamples.java (387 linija)
+   └─ Referentna klasa sa 10 kompletan primera
+   └─ Demonstracija korišćenja svih page objekata
+   └─ Real-world scenariji testiranja
+
+================================================================================
+                          DOKUMENTACIJA
+================================================================================
+
+1. PAGE_OBJECTS_README.md
+   └─ Pregled svih 6 klasa
+   └─ Primeri korišćenja
+   └─ Nasleđene metode iz BasePage
+   └─ Karakteristike i statistika
+
+2. PAGE_OBJECTS_DOCUMENTATION.md
+   └─ Detaljni pregled svake klase
+   └─ Kompletan lista svih metoda
+   └─ Parametri i povratne vrednosti
+   └─ Primeri korišćenja za svaku metodu
+
+================================================================================
+                          STATISTIKA
+================================================================================
+
+Ukupno Linija Koda:        1659 linija
+Ukupno Metoda:             ~120 metoda
+Ukupno Locatora:           47 locatora
+Ukupno Klasa:              6 klasa
+
+Po Klasi:
+  - LandingPage:           230 linija, ~20 metoda, 7 locatora
+  - ArticlesPage:          289 linija, ~25 metoda, 12 locatora
+  - CommentsPage:          276 linija, ~25 metoda, 10 locatora
+  - SingleArticlePage:     250 linija, ~20 metoda, 10 locatora
+  - SingleCommentPage:     227 linija, ~20 metoda, 8 locatora
+  - PageObjectExamples:    387 linija, 10 primena, - locatora
+
+================================================================================
+                          STRUKTURA DIREKTORIJUMA
+================================================================================
+
+src/main/java/rs/pmf/selenium/pages/
+├── LandingPage.java
+├── ArticlesPage.java
+├── CommentsPage.java
+├── SingleArticlePage.java
+├── SingleCommentPage.java
+└── PageObjectExamples.java
+
+================================================================================
+                          KLJUČNE KARAKTERISTIKE
+================================================================================
+
+✅ Page Object Pattern
+   └─ Jasna separacija koda (locators vs business logic)
+   └─ Lakšu održavanju i proširivanju
+
+✅ Comprehensive Documentation
+   └─ JavaDoc za svaku metodu
+   └─ Primeri korišćenja
+   └─ README za brz start
+
+✅ Robust Implementation
+   └─ Explicit waits (WebDriverWait)
+   └─ Error handling sa descriptivnim porukama
+   └─ Index bounds checking
+
+✅ Logging
+   └─ SLF4J logger za sve akcije
+   └─ Logovanje na INFO i DEBUG nivoima
+
+✅ BasePage Inheritance
+   └─ Reusable metode za sve stranice
+   └─ Konzistentna struktura
+
+✅ Flexible Locators
+   └─ XPath baziene pozicije
+   └─ Fallback opcije za fleksibilnost
+
+================================================================================
+                          KAKO KORISTITI
+================================================================================
+
+OSNOVNI PRIMER:
+  
+  WebDriver driver = new ChromeDriver();
+  LandingPage landingPage = new LandingPage(driver);
+  ArticlesPage articlesPage = new ArticlesPage(driver);
+  
+  landingPage.navigateToLandingPage("http://localhost:3000/");
+  landingPage.clickLetsStartButton();
+  
+  int count = articlesPage.getArticlesCount();
+  String title = articlesPage.getArticleTitle(0);
+  articlesPage.clickArticleTitle(0);
+
+================================================================================
+                          PRIMERI SCENARIJA
+================================================================================
+
+1. Landing Page → Articles → Single Article
+2. Landing Page → Comments → Single Comment
+3. Article Search & Pagination
+4. Comments Sorting & Filtering
+5. Article Downloads (CSV, JSON, PDF)
+6. Comment to Article Navigation
+7. Full Workflow: Landing → Articles → Article → Comments
+8. Search & Pagination Combined
+9. Theme/Language Changes
+10. Footer Links & Version Info
+
+================================================================================
+                          KOMPAJLIRANJE
+================================================================================
+
+$ mvn clean compile -q
+Status: ✅ USPEŠNO (bez greške)
+
+$ mvn clean test
+Status: ✅ SPREMAN ZA TESTOVE
+
+================================================================================
+                          VERSIJA & STATUS
+================================================================================
+
+Verzija:         1.0
+Kreirano:        Januar 2026
+Status:          ✅ OPERACIONALNO
+Testiranje:      ✅ SPREMAN
+Dokumentacija:   ✅ KOMPLETAN
+
+================================================================================
+                          SLEDEĆI KORACI
+================================================================================
+
+1. Kreiraj test klase koje koriste ove page objekte
+2. Dodaj TestNG ili JUnit anotacije
+3. Konfiguruj CI/CD pipeline za automatsko pokretanje
+4. Dodaj slike/videa za failed testove
+5. Proširuj page objekte sa novim funkcionalnostima
+
+================================================================================
+
+Za više informacija, vidi:
+  - PAGE_OBJECTS_README.md
+  - PAGE_OBJECTS_DOCUMENTATION.md
+  - PageObjectExamples.java
+
+================================================================================
