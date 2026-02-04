@@ -4,72 +4,84 @@ import com.example.rest.BaseRest;
 import com.example.rest.models.Comment;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import org.junit.jupiter.api.Assertions;
 
 @Data
-@NoArgsConstructor
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-public class CommentClient extends Comment {
+@EqualsAndHashCode(callSuper = false)
+public class CommentClient extends BaseRest<Comment> {
 
-    private static BaseRest<CommentClient> rest;
-
-    public static void init(String baseUrl) {
-        rest = new BaseRest<CommentClient>(baseUrl) {};
+    public CommentClient() {
+        super();
     }
 
-    public static void setToken(String token) {
-        rest.setToken(token);
+    public CommentClient(Comment data) {
+        super(data);
     }
 
-    public static CommentClient findById(Object id) {
-        return rest.get("/comments/" + id, CommentClient.class).getBody();
+    public void setCommentToken(String token) {
+        this.setToken(token);
     }
 
-    public static CommentClient[] getAll() {
-        return rest.get("/comments", CommentClient[].class).getBody();
+    public CommentClient findById(Object id) {
+        Comment data = this.get("/comments/" + id, Comment.class).getBody();
+        this.setData(data);
+        return this;
+    }
+
+    public CommentClient[] getAll() {
+        Comment[] comments = this.get("/comments", Comment[].class).getBody();
+        if (comments == null) return new CommentClient[0];
+        CommentClient[] clients = new CommentClient[comments.length];
+        for (int i = 0; i < comments.length; i++) {
+            clients[i] = new CommentClient(comments[i]);
+        }
+        return clients;
     }
 
     public CommentClient create() {
-        return rest.post("/comments", this, CommentClient.class).getBody();
+        Comment responseData = this.post("/comments", this.data, Comment.class).getBody();
+        this.data = responseData;
+        return this;
     }
 
     public CommentClient update() {
-        return rest.put("/comments/" + this.getId(), this, CommentClient.class).getBody();
+        Comment responseData = this.put("/comments/" + this.data.getId(), this.data, Comment.class).getBody();
+        this.data = responseData;
+        return this;
     }
 
     public CommentClient patch() {
-        return rest.patch("/comments/" + this.getId(), this, CommentClient.class).getBody();
+        Comment responseData = this.patch("/comments/" + this.data.getId(), this.data, Comment.class).getBody();
+        this.data = responseData;
+        return this;
     }
 
-    public static void delete(Object id) {
-        rest.delete("/comments/" + id);
+    public void delete(Object id) {
+        this.delete("/comments/" + id);
     }
 
     public CommentClient verifyId(Object expectedId) {
-        Assertions.assertEquals(expectedId, getId(), "Comment ID mismatch");
+        Assertions.assertEquals(expectedId, data.getId(), "Comment ID mismatch");
         return this;
     }
 
     public CommentClient verifyArticleId(Object expectedArticleId) {
-        Assertions.assertEquals(expectedArticleId, getArticle_id(), "Article ID mismatch");
+        Assertions.assertEquals(expectedArticleId, data.getArticle_id(), "Article ID mismatch");
         return this;
     }
 
     public CommentClient verifyUserId(Object expectedUserId) {
-        Assertions.assertEquals(expectedUserId, getUser_id(), "User ID mismatch");
+        Assertions.assertEquals(expectedUserId, data.getUser_id(), "User ID mismatch");
         return this;
     }
 
     public CommentClient verifyBody(String expectedBody) {
-        Assertions.assertEquals(expectedBody, getBody(), "Body mismatch");
+        Assertions.assertEquals(expectedBody, data.getBody(), "Body mismatch");
         return this;
     }
 
     public CommentClient verifyDate(String expectedDate) {
-        Assertions.assertEquals(expectedDate, getDate(), "Date mismatch");
+        Assertions.assertEquals(expectedDate, data.getDate(), "Date mismatch");
         return this;
     }
 }

@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 
 public class RestClient extends BaseRest<Object> {
 
-    public RestClient(String baseUrl) {
-        super(baseUrl);
+    public RestClient() {
+        super();
     }
 
     public void login(String email, String password) {
@@ -25,90 +25,94 @@ public class RestClient extends BaseRest<Object> {
     }
 
     public ArticleClient findArticleById(Object id) {
-        ResponseEntity<ArticleClient> response = get("/articles/" + id, ArticleClient.class);
-        return response.getBody();
+        return new ArticleClient().findById(id);
     }
 
     public ArticleClient[] getAllArticles() {
-        ResponseEntity<ArticleClient[]> response = get("/articles", ArticleClient[].class);
-        return response.getBody();
+        return new ArticleClient().getAll();
     }
 
     public ArticleClient createArticle(ArticleClient article) {
-        ResponseEntity<ArticleClient> response = post("/articles", article, ArticleClient.class);
-        return response.getBody();
+        return article.create();
     }
 
     public ArticleClient updateArticle(Object id, ArticleClient article) {
-        ResponseEntity<ArticleClient> response = put("/articles/" + id, article, ArticleClient.class);
-        return response.getBody();
+        // Postavljamo ID ako nije postavljen da bi update() radio ispravno
+        if (article.getData() != null) {
+            article.getData().setId(id);
+        }
+        return article.update();
     }
 
     public ArticleClient patchArticle(Object id, ArticleClient article) {
-        ResponseEntity<ArticleClient> response = patch("/articles/" + id, article, ArticleClient.class);
-        return response.getBody();
+        if (article.getData() != null) {
+            article.getData().setId(id);
+        }
+        return article.patch();
     }
 
     public void deleteArticle(Object id) {
-        delete("/articles/" + id);
+        new ArticleClient().delete(id);
     }
 
     public CommentClient findCommentById(Object id) {
-        ResponseEntity<CommentClient> response = get("/comments/" + id, CommentClient.class);
-        return response.getBody();
+        return new CommentClient().findById(id);
     }
 
     public CommentClient[] getAllComments() {
-        ResponseEntity<CommentClient[]> response = get("/comments", CommentClient[].class);
-        return response.getBody();
+        return new CommentClient().getAll();
     }
 
     public CommentClient createComment(CommentClient comment) {
-        ResponseEntity<CommentClient> response = post("/comments", comment, CommentClient.class);
-        return response.getBody();
+        return comment.create();
     }
 
     public CommentClient updateComment(Object id, CommentClient comment) {
-        ResponseEntity<CommentClient> response = put("/comments/" + id, comment, CommentClient.class);
-        return response.getBody();
+        if (comment.getData() != null) {
+            comment.getData().setId(id);
+        }
+        return comment.update();
     }
 
     public CommentClient patchComment(Object id, CommentClient comment) {
-        ResponseEntity<CommentClient> response = patch("/comments/" + id, comment, CommentClient.class);
-        return response.getBody();
+        if (comment.getData() != null) {
+            comment.getData().setId(id);
+        }
+        return comment.patch();
     }
 
     public void deleteComment(Object id) {
-        delete("/comments/" + id);
+        new CommentClient().delete(id);
     }
 
     public UserClient findUserById(Object id) {
-        ResponseEntity<UserClient> response = get("/users/" + id, UserClient.class);
-        return response.getBody();
+        return new UserClient().findById(id);
     }
 
     public UserClient[] getAllUsers() {
-        ResponseEntity<UserClient[]> response = get("/users", UserClient[].class);
-        return response.getBody();
+        return new UserClient().getAll();
     }
 
     public UserClient createUser(UserClient user) {
-        ResponseEntity<UserClient> response = post("/users", user, UserClient.class);
-        return response.getBody();
+        return user.create();
     }
 
     public UserClient updateUser(Object id, UserClient user) {
-        ResponseEntity<UserClient> response = put("/users/" + id, user, UserClient.class);
-        return response.getBody();
+        if (user.getData() != null) {
+            user.getData().setId(id);
+        }
+        return user.update();
     }
 
     public UserClient patchUser(Object id, UserClient user) {
-        ResponseEntity<UserClient> response = patch("/users/" + id, user, UserClient.class);
-        return response.getBody();
+        if (user.getData() != null) {
+            user.getData().setId(id);
+        }
+        return user.patch();
     }
 
     public void deleteUser(Object id) {
-        delete("/users/" + id);
+        new UserClient().delete(id);
     }
 
     // Dodatne metode po potrebi...

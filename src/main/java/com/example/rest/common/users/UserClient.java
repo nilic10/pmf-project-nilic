@@ -4,72 +4,84 @@ import com.example.rest.BaseRest;
 import com.example.rest.models.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import org.junit.jupiter.api.Assertions;
 
 @Data
-@NoArgsConstructor
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-public class UserClient extends User {
+@EqualsAndHashCode(callSuper = false)
+public class UserClient extends BaseRest<User> {
 
-    private static BaseRest<UserClient> rest;
-
-    public static void init(String baseUrl) {
-        rest = new BaseRest<UserClient>(baseUrl) {};
+    public UserClient() {
+        super();
     }
 
-    public static void setToken(String token) {
-        rest.setToken(token);
+    public UserClient(User data) {
+        super(data);
     }
 
-    public static UserClient findById(Object id) {
-        return rest.get("/users/" + id, UserClient.class).getBody();
+    public void setUserToken(String token) {
+        this.setToken(token);
     }
 
-    public static UserClient[] getAll() {
-        return rest.get("/users", UserClient[].class).getBody();
+    public UserClient findById(Object id) {
+        User data = this.get("/users/" + id, User.class).getBody();
+        this.setData(data);
+        return this;
+    }
+
+    public UserClient[] getAll() {
+        User[] users = this.get("/users", User[].class).getBody();
+        if (users == null) return new UserClient[0];
+        UserClient[] clients = new UserClient[users.length];
+        for (int i = 0; i < users.length; i++) {
+            clients[i] = new UserClient(users[i]);
+        }
+        return clients;
     }
 
     public UserClient create() {
-        return rest.post("/users", this, UserClient.class).getBody();
+        User responseData = this.post("/users", this.data, User.class).getBody();
+        this.data = responseData;
+        return this;
     }
 
     public UserClient update() {
-        return rest.put("/users/" + this.getId(), this, UserClient.class).getBody();
+        User responseData = this.put("/users/" + this.data.getId(), this.data, User.class).getBody();
+        this.data = responseData;
+        return this;
     }
 
     public UserClient patch() {
-        return rest.patch("/users/" + this.getId(), this, UserClient.class).getBody();
+        User responseData = this.patch("/users/" + this.data.getId(), this.data, User.class).getBody();
+        this.data = responseData;
+        return this;
     }
 
-    public static void delete(Object id) {
-        rest.delete("/users/" + id);
+    public void delete(Object id) {
+        this.delete("/users/" + id);
     }
 
     public UserClient verifyId(Object expectedId) {
-        Assertions.assertEquals(expectedId, getId(), "User ID mismatch");
+        Assertions.assertEquals(expectedId, data.getId(), "User ID mismatch");
         return this;
     }
 
     public UserClient verifyEmail(String expectedEmail) {
-        Assertions.assertEquals(expectedEmail, getEmail(), "Email mismatch");
+        Assertions.assertEquals(expectedEmail, data.getEmail(), "Email mismatch");
         return this;
     }
 
     public UserClient verifyFirstname(String expectedFirstname) {
-        Assertions.assertEquals(expectedFirstname, getFirstname(), "Firstname mismatch");
+        Assertions.assertEquals(expectedFirstname, data.getFirstname(), "Firstname mismatch");
         return this;
     }
 
     public UserClient verifyLastname(String expectedLastname) {
-        Assertions.assertEquals(expectedLastname, getLastname(), "Lastname mismatch");
+        Assertions.assertEquals(expectedLastname, data.getLastname(), "Lastname mismatch");
         return this;
     }
 
     public UserClient verifyAvatar(String expectedAvatar) {
-        Assertions.assertEquals(expectedAvatar, getAvatar(), "Avatar mismatch");
+        Assertions.assertEquals(expectedAvatar, data.getAvatar(), "Avatar mismatch");
         return this;
     }
 }

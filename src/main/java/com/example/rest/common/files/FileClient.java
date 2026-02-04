@@ -1,36 +1,48 @@
 package com.example.rest.common.files;
 
 import com.example.rest.BaseRest;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.Assertions;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class FileClient {
+@EqualsAndHashCode(callSuper = false)
+public class FileClient extends BaseRest<FileClient> {
     private String fileName;
     private String url;
 
-    private static BaseRest<FileClient> rest;
-
-    public static void init(String baseUrl) {
-        rest = new BaseRest<FileClient>(baseUrl) {};
+    public FileClient() {
+        super();
     }
 
-    public static void setToken(String token) {
-        rest.setToken(token);
+    public FileClient(FileClient data) {
+        super(data);
+        if (data != null) {
+            this.fileName = data.getFileName();
+            this.url = data.getUrl();
+        }
     }
 
-    public static FileClient[] getUploadedFiles() {
-        return rest.get("/files/uploaded", FileClient[].class).getBody();
+    public void setFileToken(String token) {
+        this.setToken(token);
     }
 
-    public static FileClient[] getPublicFiles() {
-        return rest.get("/files/uploaded/public", FileClient[].class).getBody();
+    public FileClient[] getUploadedFiles() {
+        FileClient[] files = this.get("/files/uploaded", FileClient[].class).getBody();
+        if (files == null) return new FileClient[0];
+        for (FileClient file : files) {
+            file.setData(file); // Mapiramo podatke sami sebi jer je FileClient i model
+        }
+        return files;
+    }
+
+    public FileClient[] getPublicFiles() {
+        FileClient[] files = this.get("/files/uploaded/public", FileClient[].class).getBody();
+        if (files == null) return new FileClient[0];
+        for (FileClient file : files) {
+            file.setData(file);
+        }
+        return files;
     }
 
     public FileClient verifyFileName(String expectedName) {

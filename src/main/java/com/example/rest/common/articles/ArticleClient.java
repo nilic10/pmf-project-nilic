@@ -4,78 +4,89 @@ import com.example.rest.BaseRest;
 import com.example.rest.models.Article;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.http.ResponseEntity;
 
 @Data
-@NoArgsConstructor
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-public class ArticleClient extends Article {
+@EqualsAndHashCode(callSuper = false)
+public class ArticleClient extends BaseRest<Article> {
 
-    private static BaseRest<ArticleClient> rest;
-
-    public static void init(String baseUrl) {
-        rest = new BaseRest<ArticleClient>(baseUrl) {};
+    public ArticleClient() {
+        super();
     }
 
-    public static void setToken(String token) {
-        rest.setToken(token);
+    public ArticleClient(Article data) {
+        super(data);
     }
 
-    public static ArticleClient findById(Object id) {
-        return rest.get("/articles/" + id, ArticleClient.class).getBody();
+    public void setArticleToken(String token) {
+        this.setToken(token);
     }
 
-    public static ArticleClient[] getAll() {
-        return rest.get("/articles", ArticleClient[].class).getBody();
+    public ArticleClient findById(Object id) {
+        Article data = this.get("/articles/" + id, Article.class).getBody();
+        this.setData(data);
+        return this;
+    }
+
+    public ArticleClient[] getAll() {
+        Article[] articles = this.get("/articles", Article[].class).getBody();
+        if (articles == null) return new ArticleClient[0];
+        ArticleClient[] clients = new ArticleClient[articles.length];
+        for (int i = 0; i < articles.length; i++) {
+            clients[i] = new ArticleClient(articles[i]);
+        }
+        return clients;
     }
 
     public ArticleClient create() {
-        return rest.post("/articles", this, ArticleClient.class).getBody();
+        Article responseData = this.post("/articles", this.data, Article.class).getBody();
+        this.data = responseData;
+        return this;
     }
 
     public ArticleClient update() {
-        return rest.put("/articles/" + this.getId(), this, ArticleClient.class).getBody();
+        Article responseData = this.put("/articles/" + this.data.getId(), this.data, Article.class).getBody();
+        this.data = responseData;
+        return this;
     }
 
     public ArticleClient patch() {
-        return rest.patch("/articles/" + this.getId(), this, ArticleClient.class).getBody();
+        Article responseData = this.patch("/articles/" + this.data.getId(), this.data, Article.class).getBody();
+        this.data = responseData;
+        return this;
     }
 
-    public static void delete(Object id) {
-        rest.delete("/articles/" + id);
+    public void delete(Object id) {
+        this.delete("/articles/" + id);
     }
 
     public ArticleClient verifyId(Object expectedId) {
-        Assertions.assertEquals(expectedId, getId(), "Article ID mismatch");
+        Assertions.assertEquals(expectedId, data.getId(), "Article ID mismatch");
         return this;
     }
 
     public ArticleClient verifyUserId(Object expectedUserId) {
-        Assertions.assertEquals(expectedUserId, getUser_id(), "User ID mismatch");
+        Assertions.assertEquals(expectedUserId, data.getUser_id(), "User ID mismatch");
         return this;
     }
 
     public ArticleClient verifyTitle(String expectedTitle) {
-        Assertions.assertEquals(expectedTitle, getTitle(), "Title mismatch");
+        Assertions.assertEquals(expectedTitle, data.getTitle(), "Title mismatch");
         return this;
     }
 
     public ArticleClient verifyBody(String expectedBody) {
-        Assertions.assertEquals(expectedBody, getBody(), "Body mismatch");
+        Assertions.assertEquals(expectedBody, data.getBody(), "Body mismatch");
         return this;
     }
 
     public ArticleClient verifyDate(String expectedDate) {
-        Assertions.assertEquals(expectedDate, getDate(), "Date mismatch");
+        Assertions.assertEquals(expectedDate, data.getDate(), "Date mismatch");
         return this;
     }
 
     public ArticleClient verifyImage(String expectedImage) {
-        Assertions.assertEquals(expectedImage, getImage(), "Image mismatch");
+        Assertions.assertEquals(expectedImage, data.getImage(), "Image mismatch");
         return this;
     }
 }
