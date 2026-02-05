@@ -3,6 +3,7 @@ package com.example.rest;
 import com.example.rest.common.articles.ArticleClient;
 import com.example.rest.common.comments.CommentClient;
 import com.example.rest.common.users.UserClient;
+import com.example.rest.common.users.UsersClient;
 import com.example.rest.models.UserLoginData;
 import com.example.rest.models.UserLoginToken;
 import org.springframework.http.ResponseEntity;
@@ -89,8 +90,8 @@ public class RestClient extends BaseRest<Object> {
         return new UserClient().findById(id);
     }
 
-    public UserClient[] getAllUsers() {
-        return new UserClient().getAll();
+    public UsersClient getAllUsers() {
+        return new UsersClient().getAll();
     }
 
     public UserClient createUser(UserClient user) {

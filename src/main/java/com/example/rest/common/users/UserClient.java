@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.Assertions;
 
+import java.util.Arrays;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class UserClient extends BaseRest<User> {
@@ -26,16 +28,6 @@ public class UserClient extends BaseRest<User> {
         User data = this.get("/users/" + id, User.class).getBody();
         this.setData(data);
         return this;
-    }
-
-    public UserClient[] getAll() {
-        User[] users = this.get("/users", User[].class).getBody();
-        if (users == null) return new UserClient[0];
-        UserClient[] clients = new UserClient[users.length];
-        for (int i = 0; i < users.length; i++) {
-            clients[i] = new UserClient(users[i]);
-        }
-        return clients;
     }
 
     public UserClient create() {
