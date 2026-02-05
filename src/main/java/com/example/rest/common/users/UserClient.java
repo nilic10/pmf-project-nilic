@@ -6,22 +6,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.Assertions;
 
-import java.util.Arrays;
-
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class UserClient extends BaseRest<User> {
 
     public UserClient() {
         super();
-    }
-
-    public UserClient(User data) {
-        super(data);
-    }
-
-    public void setUserToken(String token) {
-        this.setToken(token);
     }
 
     public UserClient findById(Object id) {

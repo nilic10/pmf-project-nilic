@@ -28,16 +28,6 @@ public class ArticleClient extends BaseRest<Article> {
         return this;
     }
 
-    public ArticleClient[] getAll() {
-        Article[] articles = this.get("/articles", Article[].class).getBody();
-        if (articles == null) return new ArticleClient[0];
-        ArticleClient[] clients = new ArticleClient[articles.length];
-        for (int i = 0; i < articles.length; i++) {
-            clients[i] = new ArticleClient(articles[i]);
-        }
-        return clients;
-    }
-
     public ArticleClient create() {
         Article responseData = this.post("/articles", this.data, Article.class).getBody();
         this.data = responseData;

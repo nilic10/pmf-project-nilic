@@ -10,16 +10,16 @@ import java.util.Arrays;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class UsersClient extends BaseRest<User> {
+public class AllUsersClient extends BaseRest<User> {
 
     private User[] users;
 
-    public UsersClient getAll() {
+    public AllUsersClient getAll() {
         users = this.get("/users", User[].class).getBody();
         return this;
     }
 
-    public UsersClient verifyUsernameById(Object id, String expectedFirstname) {
+    public AllUsersClient verifyUsernameById(Object id, String expectedFirstname) {
         User user = Arrays.stream(this.users)
                 .filter(u -> u.getId().equals(id))
                 .findFirst()

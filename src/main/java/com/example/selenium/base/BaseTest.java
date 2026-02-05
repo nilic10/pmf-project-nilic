@@ -1,6 +1,6 @@
-package com.example.base;
+package com.example.selenium.base;
 
-import com.example.utils.DriverFactory;
+import com.example.selenium.utils.DriverFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;

@@ -14,28 +14,10 @@ public class CommentClient extends BaseRest<Comment> {
         super();
     }
 
-    public CommentClient(Comment data) {
-        super(data);
-    }
-
-    public void setCommentToken(String token) {
-        this.setToken(token);
-    }
-
     public CommentClient findById(Object id) {
         Comment data = this.get("/comments/" + id, Comment.class).getBody();
         this.setData(data);
         return this;
-    }
-
-    public CommentClient[] getAll() {
-        Comment[] comments = this.get("/comments", Comment[].class).getBody();
-        if (comments == null) return new CommentClient[0];
-        CommentClient[] clients = new CommentClient[comments.length];
-        for (int i = 0; i < comments.length; i++) {
-            clients[i] = new CommentClient(comments[i]);
-        }
-        return clients;
     }
 
     public CommentClient create() {

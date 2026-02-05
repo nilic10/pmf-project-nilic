@@ -1,9 +1,12 @@
 package com.example.rest;
 
+import com.example.rest.common.articles.AllArticlesClient;
 import com.example.rest.common.articles.ArticleClient;
+import com.example.rest.common.comments.AllCommentsClient;
 import com.example.rest.common.comments.CommentClient;
+import com.example.rest.common.files.AllFilesClient;
+import com.example.rest.common.users.AllUsersClient;
 import com.example.rest.common.users.UserClient;
-import com.example.rest.common.users.UsersClient;
 import com.example.rest.models.UserLoginData;
 import com.example.rest.models.UserLoginToken;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +32,8 @@ public class RestClient extends BaseRest<Object> {
         return new ArticleClient().findById(id);
     }
 
-    public ArticleClient[] getAllArticles() {
-        return new ArticleClient().getAll();
+    public AllArticlesClient getAllArticles() {
+        return new AllArticlesClient().getAll();
     }
 
     public ArticleClient createArticle(ArticleClient article) {
@@ -60,8 +63,8 @@ public class RestClient extends BaseRest<Object> {
         return new CommentClient().findById(id);
     }
 
-    public CommentClient[] getAllComments() {
-        return new CommentClient().getAll();
+    public AllCommentsClient getAllComments() {
+        return new AllCommentsClient().getAll();
     }
 
     public CommentClient createComment(CommentClient comment) {
@@ -90,8 +93,8 @@ public class RestClient extends BaseRest<Object> {
         return new UserClient().findById(id);
     }
 
-    public UsersClient getAllUsers() {
-        return new UsersClient().getAll();
+    public AllUsersClient getAllUsers() {
+        return new AllUsersClient().getAll();
     }
 
     public UserClient createUser(UserClient user) {
@@ -116,5 +119,11 @@ public class RestClient extends BaseRest<Object> {
         new UserClient().delete(id);
     }
 
-    // Dodatne metode po potrebi...
+    public AllFilesClient getUploadedFiles() {
+        return new AllFilesClient().getUploadedFiles();
+    }
+
+    public AllFilesClient getPublicFiles() {
+        return new AllFilesClient().getPublicFiles();
+    }
 }

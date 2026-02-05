@@ -1,57 +1,35 @@
 package com.example.rest.common.files;
 
 import com.example.rest.BaseRest;
+import com.example.rest.models.File;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.Assertions;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class FileClient extends BaseRest<FileClient> {
-    private String fileName;
-    private String url;
+public class FileClient extends BaseRest<File> {
 
     public FileClient() {
         super();
     }
 
-    public FileClient(FileClient data) {
+    public FileClient(File data) {
         super(data);
-        if (data != null) {
-            this.fileName = data.getFileName();
-            this.url = data.getUrl();
-        }
     }
 
-    public void setFileToken(String token) {
-        this.setToken(token);
-    }
-
-    public FileClient[] getUploadedFiles() {
-        FileClient[] files = this.get("/files/uploaded", FileClient[].class).getBody();
-        if (files == null) return new FileClient[0];
-        for (FileClient file : files) {
-            file.setData(file); // Mapiramo podatke sami sebi jer je FileClient i model
-        }
-        return files;
-    }
-
-    public FileClient[] getPublicFiles() {
-        FileClient[] files = this.get("/files/uploaded/public", FileClient[].class).getBody();
-        if (files == null) return new FileClient[0];
-        for (FileClient file : files) {
-            file.setData(file);
-        }
-        return files;
-    }
-
-    public FileClient verifyFileName(String expectedName) {
-        Assertions.assertEquals(expectedName, fileName, "File name mismatch");
+    public FileClient verifyName(String expectedName) {
+        Assertions.assertEquals(expectedName, data.getName(), "File name mismatch");
         return this;
     }
 
-    public FileClient verifyUrl(String expectedUrl) {
-        Assertions.assertEquals(expectedUrl, url, "URL mismatch");
+    public FileClient verifySize(Double expectedSize) {
+        Assertions.assertEquals(expectedSize, data.getSize(), "File size mismatch");
+        return this;
+    }
+
+    public FileClient verifyLastModified(String expectedLastModified) {
+        Assertions.assertEquals(expectedLastModified, data.getLastModified(), "Last modified mismatch");
         return this;
     }
 }

@@ -1,8 +1,8 @@
-package com.example.tests;
+package com.example.tests.selenium;
 
-import com.example.base.BaseTest;
-import com.example.pages.HomePage;
-import com.example.pages.LoginPage;
+import com.example.selenium.base.BaseTest;
+import com.example.selenium.pages.HomePage;
+import com.example.selenium.pages.LoginPage;
 import org.junit.jupiter.api.Test;
 
 public class LoginTest extends BaseTest {
