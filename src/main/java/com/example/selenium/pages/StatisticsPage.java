@@ -19,7 +19,7 @@ public class StatisticsPage extends BasePage {
     }
 
     public StatisticsPage verifyStatisticsPageIsDisplayed() {
-        verifyElementDisplayed(btnUserStats);
+        verifyElementDisplayed(btnUserStats, "Statistics page is not displayed (btnUserStats not found: " + btnUserStats + ")");
         return this;
     }
 }

@@ -31,12 +31,12 @@ public class AddArticlePage extends BasePage {
     }
 
     public AddArticlePage verifyAddArticlePageIsDisplayed() {
-        verifyElementDisplayed(titleField);
+        verifyElementDisplayed(titleField, "Add Article page is not displayed (Title field not found: " + titleField + ")");
         return this;
     }
 
     public AddArticlePage verifySuccessMessage(String expectedMessage) {
-        verifyText(alertPopup, expectedMessage);
+        verifyText(alertPopup, expectedMessage, "Success message is not correct. Expected: '" + expectedMessage + "' at " + alertPopup);
         return this;
     }
 }

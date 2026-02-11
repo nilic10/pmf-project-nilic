@@ -36,7 +36,7 @@ public class LoginPage extends BasePage {
     }
 
     public LoginPage verifyLoginPageIsDisplayed() {
-        verifyElementDisplayed(loginButton);
+        verifyElementDisplayed(loginButton, "Login page is not displayed (Login button not found: " + loginButton + ")");
         return this;
     }
 }

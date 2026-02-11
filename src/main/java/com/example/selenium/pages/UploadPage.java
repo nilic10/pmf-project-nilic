@@ -26,12 +26,12 @@ public class UploadPage extends BasePage {
     }
 
     public UploadPage verifyUploadPageIsDisplayed() {
-        verifyElementDisplayed(dragAndDropArea);
+        verifyElementDisplayed(dragAndDropArea, "Upload page is not displayed (Drag & Drop area not found: " + dragAndDropArea + ")");
         return this;
     }
 
     public UploadPage verifyAlertMessage(String expectedMessage) {
-        verifyText(alertPopup, expectedMessage);
+        verifyText(alertPopup, expectedMessage, "Alert message is not correct. Expected: '" + expectedMessage + "' at " + alertPopup);
         return this;
     }
 }

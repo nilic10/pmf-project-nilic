@@ -63,22 +63,22 @@ public class ArticlesPage extends BasePage {
     }
 
     public ArticlesPage verifyArticlesPageIsDisplayed() {
-        verifyElementDisplayed(searchInput);
+        verifyElementDisplayed(searchInput, "Articles page is not displayed (Search input not found: " + searchInput + ")");
         return this;
     }
 
     public ArticlesPage verifyAlertMessage(String expectedMessage) {
-        verifyText(alertPopup, expectedMessage);
+        verifyText(alertPopup, expectedMessage, "Alert message is not correct. Expected: '" + expectedMessage + "' at " + alertPopup);
         return this;
     }
 
     public ArticlesPage verifyPaginationVisible() {
-        verifyElementDisplayed(By.id("pagination"));
+        verifyElementDisplayed(By.id("pagination"), "Pagination is not visible");
         return this;
     }
 
     public AddArticlePage goToAddArticle() {
-        verifyElementDisplayed(addArticleButton);
+        verifyElementDisplayed(addArticleButton, "Add Article button is not displayed: " + addArticleButton);
         click(addArticleButton);
         return new AddArticlePage(driver);
     }

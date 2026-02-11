@@ -23,48 +23,53 @@ public class HomePage extends BasePage {
     }
 
     public HomePage verifyWelcomeMessage(String expectedMessage) {
-        verifyText(welcomeMessage, expectedMessage);
+        verifyText(welcomeMessage, expectedMessage, "Welcome message is not correct. Expected: '" + expectedMessage + "' at " + welcomeMessage);
         return this;
     }
 
     public UsersPage goToUsers() {
+        verifyElementDisplayed(usersLink, "Users link is not displayed: " + usersLink);
         click(usersLink);
         return new UsersPage(driver);
     }
 
     public StatisticsPage goToStatistics() {
+        verifyElementDisplayed(statisticsLink, "Statistics link is not displayed: " + statisticsLink);
         click(statisticsLink);
         return new StatisticsPage(driver);
     }
 
     public ArticlesPage goToArticles() {
+        verifyElementDisplayed(articlesLink, "Articles link is not displayed: " + articlesLink);
         click(articlesLink);
         return new ArticlesPage(driver);
     }
 
     public UsersPage goToProfile() {
+        verifyElementDisplayed(profileLink, "Profile link is not displayed: " + profileLink);
         click(profileLink);
         return new UsersPage(driver);
     }
 
     public UploadPage goToUpload() {
-        verifyElementDisplayed(uploadButton);
+        verifyElementDisplayed(uploadButton, "Upload button is not displayed: " + uploadButton);
         click(uploadButton);
         return new UploadPage(driver);
     }
 
     public LoginPage logout() {
+        verifyElementDisplayed(logoutButton, "Logout button is not displayed: " + logoutButton);
         click(logoutButton);
         return new LoginPage(driver);
     }
 
     public HomePage verifyHomePageIsDisplayed() {
-        verifyElementDisplayed(logoutButton);
+        verifyElementDisplayed(logoutButton, "Home page is not displayed (Logout button not found: " + logoutButton + ")");
         return this;
     }
 
     public HomePage verifyUploadButtonVisible() {
-        verifyElementDisplayed(uploadButton);
+        verifyElementDisplayed(uploadButton, "Upload button should be visible: " + uploadButton);
         return this;
     }
 }

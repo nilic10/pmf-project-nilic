@@ -48,12 +48,12 @@ public class UsersPage extends BasePage {
     }
 
     public UsersPage verifyUsersPageIsDisplayed() {
-        verifyElementDisplayed(By.id("btnUsers")); // Header or navigation link that should be there
+        verifyElementDisplayed(By.id("btnUsers"), "Users page is not displayed (btnUsers not found)");
         return this;
     }
 
     public UsersPage verifyAlertMessage(String expectedMessage) {
-        verifyText(alertPopup, expectedMessage);
+        verifyText(alertPopup, expectedMessage, "Alert message is not correct. Expected: '" + expectedMessage + "' at " + alertPopup);
         return this;
     }
 }

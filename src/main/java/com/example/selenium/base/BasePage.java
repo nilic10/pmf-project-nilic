@@ -57,18 +57,27 @@ public class BasePage {
     }
 
     // Assertion wrappers
-    public BasePage verifyText(By locator, String expectedText) {
-        Assertions.assertEquals(expectedText, getText(locator));
-        return this;
+    public void verifyText(By locator, String expectedText) {
+        verifyText(locator, expectedText, "Text for element " + locator + " should be " + expectedText);
     }
 
-    public BasePage verifyElementDisplayed(By locator) {
-        Assertions.assertTrue(isDisplayed(locator), "Element " + locator + " should be displayed");
-        return this;
+    public void verifyText(By locator, String expectedText, String errorMessage) {
+        Assertions.assertEquals(expectedText, getText(locator), errorMessage);
     }
 
-    public BasePage verifyTitle(String expectedTitle) {
-        Assertions.assertEquals(expectedTitle, driver.getTitle());
-        return this;
+    public void verifyElementDisplayed(By locator) {
+         verifyElementDisplayed(locator, "Element " + locator + " should be displayed");
+    }
+
+    public void verifyElementDisplayed(By locator, String errorMessage) {
+        Assertions.assertTrue(isDisplayed(locator), errorMessage);
+    }
+
+    public void verifyTitle(String expectedTitle) {
+         verifyTitle(expectedTitle, "Title should be " + expectedTitle);
+    }
+
+    public void verifyTitle(String expectedTitle, String errorMessage) {
+        Assertions.assertEquals(expectedTitle, driver.getTitle(), errorMessage);
     }
 }
