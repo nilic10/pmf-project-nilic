@@ -12,9 +12,16 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.ByteArrayInputStream;
 
+/**
+ * Base class for all Selenium tests.
+ * Handles WebDriver lifecycle and provides utility methods like screenshot capture on failure.
+ */
 public class BaseTest {
     protected WebDriver driver;
 
+    /**
+     * Extension that takes a screenshot if a test fails.
+     */
     @RegisterExtension
     AfterTestExecutionCallback screenshotCallback = context -> {
         if (context.getExecutionException().isPresent()) {
@@ -25,12 +32,19 @@ public class BaseTest {
         }
     };
 
+    /**
+     * Setup method to initialize WebDriver before each test.
+     * Default browser is Chrome, but can be overridden by system property 'browser'.
+     */
     @BeforeEach
     public void setUp() {
         String browser = System.getProperty("browser", "chrome");
         driver = DriverFactory.getDriver(browser);
     }
 
+    /**
+     * Tear down method to quit WebDriver after each test.
+     */
     @AfterEach
     public void tearDown() {
         if (driver != null) {
@@ -38,6 +52,10 @@ public class BaseTest {
         }
     }
 
+    /**
+     * Captures a screenshot and attaches it to the Allure report.
+     * @param name Name of the attachment in the report.
+     */
     public void saveScreenshot(String name) {
         if (driver instanceof TakesScreenshot) {
             byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
