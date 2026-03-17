@@ -60,6 +60,11 @@ Run with a specific browser (default is chrome):
 mvn test -Dbrowser=firefox
 ```
 
+Run with a proxy:
+```bash
+mvn test -Dproxy=localhost:9999
+```
+
 ## 📊 Reporting (Allure)
 
 After running the tests, results are located in `target/allure-results`. To generate the report, run:
@@ -80,3 +85,4 @@ Base paths are configured in the code but can be overridden via system propertie
 - `baseUrl`: Base URL for the REST API (default: `http://localhost:3000/api`)
 - `browser`: Browser for Selenium tests (chrome, firefox)
 - `gridUrl`: URL for Selenium Grid if remote drivers are used
+- `proxy`: Proxy server address (e.g., `localhost:8080`)

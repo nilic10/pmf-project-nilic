@@ -34,8 +34,8 @@ public class LoginTest extends BaseTest {
                 .verifyStatisticsPageIsDisplayed();
 
         homePage.goToArticles()
-                .verifyArticlesPageIsDisplayed();
-                // .verifyPaginationVisible(); // Removed as it causes failure when there are few articles
+                .verifyArticlesPageIsDisplayed()
+                .verifyPaginationVisible();
         
         homePage.goToUpload()
                 .verifyUploadPageIsDisplayed();
