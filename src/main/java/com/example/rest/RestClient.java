@@ -25,20 +25,22 @@ public class RestClient extends BaseRest<Object> {
     }
 
     /**
-     * Authenticates a user and sets the access token for subsequent requests.
+     * Authenticates a user and returns the access token.
      * 
      * @param email User's email.
      * @param password User's password.
+     * @return The access token as a String.
      */
-    public void login(String email, String password) {
+    public String login(String email, String password) {
         UserLoginData loginData = UserLoginData.builder()
                 .email(email)
                 .password(password)
                 .build();
         ResponseEntity<UserLoginToken> response = post("/login", loginData, UserLoginToken.class);
         if (response.getBody() != null) {
-            setToken(response.getBody().getAccess_token());
+            return response.getBody().getAccess_token();
         }
+        return null;
     }
 
     /**

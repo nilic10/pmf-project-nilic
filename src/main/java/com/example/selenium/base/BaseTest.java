@@ -1,7 +1,11 @@
 package com.example.selenium.base;
 
+import com.example.selenium.utils.BrowserMobProxyServiceCreator;
 import com.example.selenium.utils.DriverFactory;
 import io.qameta.allure.Allure;
+import net.lightbody.bmp.core.har.Har;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
@@ -11,6 +15,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Base class for all Selenium tests.
@@ -18,6 +25,9 @@ import java.io.ByteArrayInputStream;
  */
 public class BaseTest {
     protected WebDriver driver;
+
+    protected static final Logger _logger = LogManager
+            .getLogger(BaseTest.class);
 
     /**
      * Extension that takes a screenshot if a test fails.
@@ -47,6 +57,7 @@ public class BaseTest {
      */
     @AfterEach
     public void tearDown() {
+        stopBrowserMobProxyService();
         if (driver != null) {
             driver.quit();
         }
@@ -61,6 +72,37 @@ public class BaseTest {
             byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
             Allure.addAttachment(name, new ByteArrayInputStream(screenshot));
             System.out.println("[DEBUG_LOG] Screenshot added to Allure: " + name);
+        }
+    }
+
+    public void newHar() {
+        if (BrowserMobProxyServiceCreator.getService() != null) {
+            BrowserMobProxyServiceCreator.getInstance().newHar();
+        }
+    }
+
+    /**
+     * Captures the HAR file and attaches it to the Allure report.
+     */
+    public void saveHar(String fileName) {
+        Har har = BrowserMobProxyServiceCreator.getInstance().getHar();
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            har.writeTo(bos);
+            har.writeTo(new File("target/" + fileName));
+            Allure.addAttachment("network-log.har", "application/json", new ByteArrayInputStream(bos.toByteArray()), ".har");
+            System.out.println("[DEBUG_LOG] HAR file added to Allure");
+        } catch (IOException e) {
+            System.err.println("[DEBUG_LOG] Failed to save HAR file: " + e.getMessage());
+        }
+    }
+    public void stopBrowserMobProxyService() {
+
+        if (BrowserMobProxyServiceCreator.getService() != null
+                && BrowserMobProxyServiceCreator.getInstance().isStarted()) {
+            BrowserMobProxyServiceCreator.getInstance().stopService();
+        }
+        if (_logger.isDebugEnabled()) {
+            _logger.debug("BrowserMobProxy service is stopped!");
         }
     }
 }

@@ -29,14 +29,6 @@ public class ArticleClient extends BaseRest<Article> {
         super(data);
     }
 
-    /**
-     * Sets the authentication token for article-related requests.
-     * 
-     * @param token Authentication token.
-     */
-    public void setArticleToken(String token) {
-        this.setToken(token);
-    }
 
     /**
      * Retrieves an article by its ID and populates this client's data.

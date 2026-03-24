@@ -1,5 +1,7 @@
 package com.example.selenium.utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -8,16 +10,16 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 /**
  * Factory class for creating WebDriver instances.
  * Supports Chrome, Firefox, and remote execution via Selenium Grid.
  */
 public class DriverFactory {
-
-    private String _proxy;
 
     /**
      * Creates and returns a WebDriver instance for the specified browser.
@@ -36,6 +38,7 @@ public class DriverFactory {
         WebDriver driver;
         String gridUrl = System.getProperty("gridUrl", "http://localhost:4444/wd/hub");
         String proxyServer = System.getProperty("proxy");
+        String browserMobProxy = System.getProperty("browserMobProxy");
 
         switch (browser.toLowerCase()) {
             case "chrome":
@@ -43,6 +46,23 @@ public class DriverFactory {
                 if (proxyServer != null) {
                     options.addArguments("--proxy-bypass-list=<-loopback>");
                     options.addArguments("--proxy-server=" + proxyServer);
+                }
+                if (browserMobProxy != null) {
+                    // start browser mob proxy
+                    Proxy seleniumProxy = BrowserMobProxyServiceCreator
+                            .getInstance().startBrowserMobProxy();
+
+                    // add proxy to options
+                    String proxyString = String.format("localhost:%d",
+                             BrowserMobProxyServiceCreator
+                                    .getInstance().getPort());
+                    seleniumProxy.setProxyType(Proxy.ProxyType.MANUAL)
+                            .setHttpProxy(proxyString).setSslProxy(proxyString);
+
+                    BrowserMobProxyServiceCreator.getInstance()
+                            .enableHarCaptureTypes();
+                    options.setProxy(seleniumProxy);
+                    options.addArguments("--ignore-certificate-errors");
                 }
                 driver = new ChromeDriver(options);
                 break;

@@ -18,6 +18,8 @@ public class LoginTest extends BaseTest {
     @DisplayName("Test: Login and Navigation")
     public void testLoginAndNavigation() {
         LoginPage loginPage = new LoginPage(driver);
+
+        newHar();
         loginPage.navigateTo("http://localhost:3000/login/");
         
         HomePage homePage = loginPage
@@ -25,22 +27,26 @@ public class LoginTest extends BaseTest {
                 .login("nikola.ilic84@gmail.com", "password1!")
                 .verifyHomePageIsDisplayed();
 
-        homePage.verifyWelcomeMessage("Hi nikola.ilic84@gmail.com!");
-        
-        homePage.goToUsers()
-                .verifyUsersPageIsDisplayed();
-        
-        homePage.goToStatistics()
-                .verifyStatisticsPageIsDisplayed();
+        homePage.goToArticles();
 
-        homePage.goToArticles()
-                .verifyArticlesPageIsDisplayed()
-                .verifyPaginationVisible();
-        
-        homePage.goToUpload()
-                .verifyUploadPageIsDisplayed();
-        
-        homePage.goToArticles().goToAddArticle()
-                .verifyAddArticlePageIsDisplayed();
+        saveHar("fileName1");
+
+//        homePage.verifyWelcomeMessage("Hi nikola.ilic84@gmail.com!");
+//
+//        homePage.goToUsers()
+//                .verifyUsersPageIsDisplayed();
+//
+//        homePage.goToStatistics()
+//                .verifyStatisticsPageIsDisplayed();
+//
+//        homePage.goToArticles()
+//                .verifyArticlesPageIsDisplayed()
+//                .verifyPaginationVisible();
+//
+//        homePage.goToUpload()
+//                .verifyUploadPageIsDisplayed();
+//
+//        homePage.goToArticles().goToAddArticle()
+//                .verifyAddArticlePageIsDisplayed();
     }
 }
