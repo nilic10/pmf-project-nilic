@@ -47,9 +47,9 @@ public class AddArticlePage extends BasePage {
      * Clicks the save button to create the article.
      * @return This AddArticlePage instance.
      */
-    public AddArticlePage clickSave() {
+    public ArticlesPage clickSave() {
         click(saveButton);
-        return this;
+        return new ArticlesPage(driver);
     }
 
     /**
@@ -58,16 +58,6 @@ public class AddArticlePage extends BasePage {
      */
     public AddArticlePage verifyAddArticlePageIsDisplayed() {
         verifyElementDisplayed(titleField, "Add Article page is not displayed (Title field not found: " + titleField + ")");
-        return this;
-    }
-
-    /**
-     * Verifies the success message after saving an article.
-     * @param expectedMessage The expected success message text.
-     * @return This AddArticlePage instance.
-     */
-    public AddArticlePage verifySuccessMessage(String expectedMessage) {
-        verifyText(alertPopup, expectedMessage, "Success message is not correct. Expected: '" + expectedMessage + "' at " + alertPopup);
         return this;
     }
 }

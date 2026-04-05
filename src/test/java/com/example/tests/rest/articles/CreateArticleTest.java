@@ -24,7 +24,7 @@ public class CreateArticleTest extends RestClient {
     private static final String ARTICLE_DATE = "2024-05-20T10:00:00Z";
     private static final String ARTICLE_IMAGE = "https://example.com/image.jpg";
 
-    private User testUser;
+    private UserClient testUser;
     private String token;
 
     @BeforeEach
@@ -39,9 +39,7 @@ public class CreateArticleTest extends RestClient {
                 .avatar(DEFAULT_AVATAR)
                 .build();
 
-        UserClient userClient = new UserClient();
-        userClient.setData(newUser);
-        testUser = userClient.create().getData();
+        testUser = createUser(newUser);
 
         token = login(uniqueEmail, DEFAULT_PASSWORD);
     }
@@ -54,16 +52,12 @@ public class CreateArticleTest extends RestClient {
                 .body(ARTICLE_BODY)
                 .date(ARTICLE_DATE)
                 .image(ARTICLE_IMAGE)
-                .user_id(testUser.getId())
+                .user_id(testUser.getData().getId())
                 .build();
 
-        ArticleClient articleClient = new ArticleClient();
-        articleClient.setToken(token);
-        articleClient.setData(newArticle);
-
-        createArticle(articleClient)
+        createArticle(token, newArticle)
                 .verifyTitle(ARTICLE_TITLE)
                 .verifyBody(ARTICLE_BODY)
-                .verifyUserId(testUser.getId());
+                .verifyUserId(testUser.getData().getId());
     }
 }

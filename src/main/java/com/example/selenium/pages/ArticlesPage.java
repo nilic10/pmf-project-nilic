@@ -20,7 +20,8 @@ public class ArticlesPage extends BasePage {
     private By nextButton = By.cssSelector("#pagination .next");
     private By prevButton = By.cssSelector("#pagination .prev");
     private By pageLink = By.className("page-link");
-    private By addArticleButton = By.id("btnArticlesAdd");
+    private By addArticleButton = By.id("add-new");
+    private String articleTitleXpath = "//div[contains(@class, 'card-wrapper')]//a[text()='%s']";
 
     /**
      * Constructor for ArticlesPage.
@@ -138,9 +139,60 @@ public class ArticlesPage extends BasePage {
      * Navigates to the Add Article page by clicking the add button.
      * @return A new instance of AddArticlePage.
      */
-    public AddArticlePage goToAddArticle() {
+    public AddArticlePage addArticle() {
         verifyElementDisplayed(addArticleButton, "Add Article button is not displayed: " + addArticleButton);
         click(addArticleButton);
         return new AddArticlePage(driver);
+    }
+
+    /**
+     * Gets the count of articles currently displayed on the articles page.
+     * @return The number of articles.
+     */
+    public int getArticlesCount() {
+        By articleItems = By.className("card-wrapper");
+        return driver.findElements(articleItems).size();
+    }
+
+    /**
+     * Verifies that the Articles page is displayed.
+     * @return This ArticlesPage instance.
+     */
+    public ArticlesPage verifyArticlesPage() {
+        verifyArticlesPageIsDisplayed();
+        return this;
+    }
+    /**
+     * Verifies the count of articles currently displayed.
+     * @param expectedCount The expected number of articles.
+     * @return This ArticlesPage instance.
+     */
+    public ArticlesPage verifyArticleCount(int expectedCount) {
+        int actualCount = getArticlesCount();
+        if (actualCount != expectedCount) {
+            throw new AssertionError("Expected " + expectedCount + " articles, but found " + actualCount);
+        }
+        return this;
+    }
+
+    /**
+     * Verifies the success message after saving an article.
+     * @param expectedMessage The expected success message text.
+     * @return This AddArticlePage instance.
+     */
+    public ArticlesPage verifySuccessMessage(String expectedMessage) {
+        verifyText(alertPopup, expectedMessage, "Success message is not correct. Expected: '" + expectedMessage + "' at " + alertPopup);
+        return this;
+    }
+
+    /**
+     * Verifies that an article with the specified title exists.
+     * @param title The title of the article to verify.
+     * @return This ArticlesPage instance.
+     */
+    public ArticlesPage verifyArticleWithTitleExists(String title) {
+        By articleTitleLocator = By.xpath(String.format(articleTitleXpath, title));
+        verifyElementDisplayed(articleTitleLocator, "Article with title '" + title + "' was not found on the page.");
+        return this;
     }
 }

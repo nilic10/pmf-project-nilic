@@ -43,35 +43,55 @@ public class ArticleClient extends BaseRest<Article> {
     }
 
     /**
+     * Creates a new article using the provided token and data.
+     *
+     * @param token The bearer token for authorization.
+     * @param data  The article data to create.
+     * @return This ArticleClient instance with created article data.
+     */
+    public ArticleClient create(String token, Article data) {
+        this.setToken(token);
+        Article responseData = this.post("/articles", data, Article.class).getBody();
+        this.setData(responseData);
+        return this;
+    }
+
+    /**
      * Creates a new article using the current data.
-     * 
+     *
      * @return This ArticleClient instance with created article data.
      */
     public ArticleClient create() {
         Article responseData = this.post("/articles", this.data, Article.class).getBody();
-        this.data = responseData;
+        this.setData(responseData);
         return this;
     }
 
     /**
      * Updates the article using PUT (full update).
-     * 
+     *
+     * @param token The bearer token for authorization.
+     * @param data  The article data to update.
      * @return This ArticleClient instance with updated data.
      */
-    public ArticleClient update() {
-        Article responseData = this.put("/articles/" + this.data.getId(), this.data, Article.class).getBody();
-        this.data = responseData;
+    public ArticleClient update(String token, Article data) {
+        this.setToken(token);
+        Article responseData = this.put("/articles/" + data.getId(), data, Article.class).getBody();
+        this.setData(responseData);
         return this;
     }
 
     /**
      * Updates the article using PATCH (partial update).
-     * 
+     *
+     * @param token The bearer token for authorization.
+     * @param data  The article data to patch.
      * @return This ArticleClient instance with patched data.
      */
-    public ArticleClient patch() {
-        Article responseData = this.patch("/articles/" + this.data.getId(), this.data, Article.class).getBody();
-        this.data = responseData;
+    public ArticleClient patch(String token, Article data) {
+        this.setToken(token);
+        Article responseData = this.patch("/articles/" + data.getId(), data, Article.class).getBody();
+        this.setData(responseData);
         return this;
     }
 

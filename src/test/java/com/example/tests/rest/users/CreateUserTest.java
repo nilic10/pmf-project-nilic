@@ -1,7 +1,6 @@
 package com.example.tests.rest.users;
 
 import com.example.rest.RestClient;
-import com.example.rest.common.users.UserClient;
 import com.example.rest.models.User;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -31,10 +30,7 @@ public class CreateUserTest extends RestClient {
                 .avatar(USER_AVATAR)
                 .build();
 
-        UserClient userClient = new UserClient();
-        userClient.setData(newUser);
-
-        createUser(userClient)
+        createUser(newUser)
                 .verifyEmail(uniqueEmail)
                 .verifyFirstname(USER_FIRSTNAME)
                 .verifyLastname(USER_LASTNAME);

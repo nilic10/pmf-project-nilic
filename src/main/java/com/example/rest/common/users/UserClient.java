@@ -34,34 +34,48 @@ public class UserClient extends BaseRest<User> {
 
     /**
      * Creates a new user using the current data.
-     * 
+     *
+     * @param data  The user data to create.
+     * @return This UserClient instance with created user data.
+     */
+    public UserClient create(User data) {
+        User responseData = this.post("/users", data, User.class).getBody();
+        this.setData(responseData);
+        return this;
+    }
+
+    /**
+     * Creates a new user using the current data.
+     *
      * @return This UserClient instance with created user data.
      */
     public UserClient create() {
         User responseData = this.post("/users", this.data, User.class).getBody();
-        this.data = responseData;
+        this.setData(responseData);
         return this;
     }
 
     /**
      * Updates the user using PUT (full update).
-     * 
+     *
+     * @param data  The user data to update.
      * @return This UserClient instance with updated data.
      */
-    public UserClient update() {
-        User responseData = this.put("/users/" + this.data.getId(), this.data, User.class).getBody();
-        this.data = responseData;
+    public UserClient update(User data) {
+        User responseData = this.put("/users/" + data.getId(), data, User.class).getBody();
+        this.setData(responseData);
         return this;
     }
 
     /**
      * Updates the user using PATCH (partial update).
-     * 
+     *
+     * @param data  The user data to patch.
      * @return This UserClient instance with patched data.
      */
-    public UserClient patch() {
-        User responseData = this.patch("/users/" + this.data.getId(), this.data, User.class).getBody();
-        this.data = responseData;
+    public UserClient patch(User data) {
+        User responseData = this.patch("/users/" + data.getId(), data, User.class).getBody();
+        this.setData(responseData);
         return this;
     }
 

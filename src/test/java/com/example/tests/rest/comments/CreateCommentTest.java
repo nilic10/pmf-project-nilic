@@ -23,7 +23,7 @@ public class CreateCommentTest extends RestClient {
     private static final String COMMENT_DATE = "2024-05-20T10:00:00Z";
     private static final Object ARTICLE_ID = 1;
 
-    private User testUser;
+    private UserClient testUser;
     private String token;
 
     @BeforeEach
@@ -38,9 +38,7 @@ public class CreateCommentTest extends RestClient {
                 .avatar(DEFAULT_AVATAR)
                 .build();
 
-        UserClient userClient = new UserClient();
-        userClient.setData(newUser);
-        testUser = userClient.create().getData();
+        testUser = createUser(newUser);
 
         token = login(uniqueEmail, DEFAULT_PASSWORD);
     }
@@ -50,18 +48,14 @@ public class CreateCommentTest extends RestClient {
     public void createCommentTest() {
         Comment newComment = Comment.builder()
                 .article_id(ARTICLE_ID)
-                .user_id(testUser.getId())
+                .user_id(testUser.getData().getId())
                 .body(COMMENT_BODY)
                 .date(COMMENT_DATE)
                 .build();
 
-        CommentClient commentClient = new CommentClient();
-        commentClient.setToken(token);
-        commentClient.setData(newComment);
-
-        createComment(commentClient)
+        createComment(token, newComment)
                 .verifyBody(COMMENT_BODY)
                 .verifyArticleId(ARTICLE_ID)
-                .verifyUserId(testUser.getId());
+                .verifyUserId(testUser.getData().getId());
     }
 }

@@ -33,35 +33,44 @@ public class CommentClient extends BaseRest<Comment> {
     }
 
     /**
-     * Creates a new comment using the current data.
-     * 
+     * Creates a new comment using the provided token and data.
+     *
+     * @param token The bearer token for authorization.
+     * @param data  The comment data to create.
      * @return This CommentClient instance with created comment data.
      */
-    public CommentClient create() {
-        Comment responseData = this.post("/comments", this.data, Comment.class).getBody();
-        this.data = responseData;
+    public CommentClient create(String token, Comment data) {
+        this.setToken(token);
+        Comment responseData = this.post("/comments", data, Comment.class).getBody();
+        this.setData(responseData);
         return this;
     }
 
     /**
      * Updates the comment using PUT (full update).
-     * 
+     *
+     * @param token The bearer token for authorization.
+     * @param data  The comment data to update.
      * @return This CommentClient instance with updated data.
      */
-    public CommentClient update() {
-        Comment responseData = this.put("/comments/" + this.data.getId(), this.data, Comment.class).getBody();
-        this.data = responseData;
+    public CommentClient update(String token, Comment data) {
+        this.setToken(token);
+        Comment responseData = this.put("/comments/" + data.getId(), data, Comment.class).getBody();
+        this.setData(responseData);
         return this;
     }
 
     /**
      * Updates the comment using PATCH (partial update).
-     * 
+     *
+     * @param token The bearer token for authorization.
+     * @param data  The comment data to patch.
      * @return This CommentClient instance with patched data.
      */
-    public CommentClient patch() {
-        Comment responseData = this.patch("/comments/" + this.data.getId(), this.data, Comment.class).getBody();
-        this.data = responseData;
+    public CommentClient patch(String token, Comment data) {
+        this.setToken(token);
+        Comment responseData = this.patch("/comments/" + data.getId(), data, Comment.class).getBody();
+        this.setData(responseData);
         return this;
     }
 

@@ -15,6 +15,7 @@ public class HomePage extends BasePage {
     private By usersLink = By.id("btnUsers");
     private By statisticsLink = By.id("btnStats");
     private By articlesLink = By.id("btnArticles");
+    private By myArticlesLink = By.id("btnArticlesLink");
     private By profileLink = By.id("btnEdit");
     private By uploadButton = By.id("upload-new");
 
@@ -55,6 +56,17 @@ public class HomePage extends BasePage {
     }
 
     /**
+     * Navigates to the Comments page.
+     * @return A new instance of CommentsPage.
+     */
+    public CommentsPage goToComments() {
+        By commentsLink = By.id("btnComments");
+        verifyElementDisplayed(commentsLink, "Comments link is not displayed: " + commentsLink);
+        click(commentsLink);
+        return new CommentsPage(driver);
+    }
+
+    /**
      * Navigates to the Statistics page.
      * @return A new instance of StatisticsPage.
      */
@@ -75,13 +87,23 @@ public class HomePage extends BasePage {
     }
 
     /**
-     * Navigates to the User Profile (Users) page.
-     * @return A new instance of UsersPage.
+     * Navigates to the My Profile page.
+     * @return A new instance of MyProfilePage.
      */
-    public UsersPage goToProfile() {
+    public MyProfilePage goToMyProfile() {
         verifyElementDisplayed(profileLink, "Profile link is not displayed: " + profileLink);
         click(profileLink);
-        return new UsersPage(driver);
+        return new MyProfilePage(driver);
+    }
+
+    /**
+     * Navigates to the My Articles page.
+     * @return A new instance of ArticlesPage.
+     */
+    public ArticlesPage goToMyArticles() {
+        verifyElementDisplayed(myArticlesLink, "My Articles link is not displayed: " + myArticlesLink);
+        click(myArticlesLink);
+        return new ArticlesPage(driver);
     }
 
     /**

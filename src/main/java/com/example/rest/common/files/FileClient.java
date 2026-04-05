@@ -30,6 +30,48 @@ public class FileClient extends BaseRest<File> {
     }
 
     /**
+     * Creates a new file entry using the provided token and data.
+     *
+     * @param token The bearer token for authorization.
+     * @param data  The file data to create.
+     * @return This FileClient instance with created file data.
+     */
+    public FileClient create(String token, File data) {
+        this.setToken(token);
+        File responseData = this.post("/files", data, File.class).getBody();
+        this.setData(responseData);
+        return this;
+    }
+
+    /**
+     * Updates the file information using PUT (full update).
+     *
+     * @param token The bearer token for authorization.
+     * @param data  The file data to update.
+     * @return This FileClient instance with updated data.
+     */
+    public FileClient update(String token, File data) {
+        this.setToken(token);
+        File responseData = this.put("/files/" + data.getName(), data, File.class).getBody();
+        this.setData(responseData);
+        return this;
+    }
+
+    /**
+     * Updates the file information using PATCH (partial update).
+     *
+     * @param token The bearer token for authorization.
+     * @param data  The file data to patch.
+     * @return This FileClient instance with patched data.
+     */
+    public FileClient patch(String token, File data) {
+        this.setToken(token);
+        File responseData = this.patch("/files/" + data.getName(), data, File.class).getBody();
+        this.setData(responseData);
+        return this;
+    }
+
+    /**
      * Verifies that the file name matches the expected name.
      * 
      * @param expectedName The expected file name.

@@ -5,8 +5,13 @@ import com.example.rest.common.articles.ArticleClient;
 import com.example.rest.common.comments.AllCommentsClient;
 import com.example.rest.common.comments.CommentClient;
 import com.example.rest.common.files.AllFilesClient;
+import com.example.rest.common.files.FileClient;
 import com.example.rest.common.users.AllUsersClient;
 import com.example.rest.common.users.UserClient;
+import com.example.rest.models.Article;
+import com.example.rest.models.Comment;
+import com.example.rest.models.File;
+import com.example.rest.models.User;
 import com.example.rest.models.UserLoginData;
 import com.example.rest.models.UserLoginToken;
 import org.springframework.http.ResponseEntity;
@@ -65,40 +70,42 @@ public class RestClient extends BaseRest<Object> {
     /**
      * Creates a new article.
      * 
-     * @param article The ArticleClient instance containing the article data to create.
+     * @param token The bearer token for authorization.
+     * @param article The Article model containing the article data to create.
      * @return The created ArticleClient instance.
      */
-    public ArticleClient createArticle(ArticleClient article) {
-        return article.create();
+    public ArticleClient createArticle(String token, Article article) {
+        return new ArticleClient().create(token, article);
     }
 
     /**
      * Updates an existing article using PUT (full update).
      * 
+     * @param token The bearer token for authorization.
      * @param id The ID of the article to update.
-     * @param article The ArticleClient instance containing the new data.
+     * @param article The Article model containing the new data.
      * @return The updated ArticleClient instance.
      */
-    public ArticleClient updateArticle(Object id, ArticleClient article) {
-        // Postavljamo ID ako nije postavljen da bi update() radio ispravno
-        if (article.getData() != null) {
-            article.getData().setId(id);
+    public ArticleClient updateArticle(String token, Object id, Article article) {
+        if (article != null) {
+            article.setId(id);
         }
-        return article.update();
+        return new ArticleClient().update(token, article);
     }
 
     /**
      * Updates an existing article using PATCH (partial update).
      * 
+     * @param token The bearer token for authorization.
      * @param id The ID of the article to patch.
-     * @param article The ArticleClient instance containing the partial data.
+     * @param article The Article model containing the partial data.
      * @return The patched ArticleClient instance.
      */
-    public ArticleClient patchArticle(Object id, ArticleClient article) {
-        if (article.getData() != null) {
-            article.getData().setId(id);
+    public ArticleClient patchArticle(String token, Object id, Article article) {
+        if (article != null) {
+            article.setId(id);
         }
-        return article.patch();
+        return new ArticleClient().patch(token, article);
     }
 
     /**
@@ -132,39 +139,42 @@ public class RestClient extends BaseRest<Object> {
     /**
      * Creates a new comment.
      * 
-     * @param comment The CommentClient instance containing the comment data to create.
+     * @param token The bearer token for authorization.
+     * @param comment The Comment model containing the comment data to create.
      * @return The created CommentClient instance.
      */
-    public CommentClient createComment(CommentClient comment) {
-        return comment.create();
+    public CommentClient createComment(String token, Comment comment) {
+        return new CommentClient().create(token, comment);
     }
 
     /**
      * Updates an existing comment using PUT (full update).
      * 
+     * @param token The bearer token for authorization.
      * @param id The ID of the comment to update.
-     * @param comment The CommentClient instance containing the new data.
+     * @param comment The Comment model containing the new data.
      * @return The updated CommentClient instance.
      */
-    public CommentClient updateComment(Object id, CommentClient comment) {
-        if (comment.getData() != null) {
-            comment.getData().setId(id);
+    public CommentClient updateComment(String token, Object id, Comment comment) {
+        if (comment != null) {
+            comment.setId(id);
         }
-        return comment.update();
+        return new CommentClient().update(token, comment);
     }
 
     /**
      * Updates an existing comment using PATCH (partial update).
      * 
+     * @param token The bearer token for authorization.
      * @param id The ID of the comment to patch.
-     * @param comment The CommentClient instance containing the partial data.
+     * @param comment The Comment model containing the partial data.
      * @return The patched CommentClient instance.
      */
-    public CommentClient patchComment(Object id, CommentClient comment) {
-        if (comment.getData() != null) {
-            comment.getData().setId(id);
+    public CommentClient patchComment(String token, Object id, Comment comment) {
+        if (comment != null) {
+            comment.setId(id);
         }
-        return comment.patch();
+        return new CommentClient().patch(token, comment);
     }
 
     /**
@@ -198,39 +208,42 @@ public class RestClient extends BaseRest<Object> {
     /**
      * Creates a new user.
      * 
-     * @param user The UserClient instance containing the user data to create.
+     * @param user The User model containing the user data to create.
      * @return The created UserClient instance.
      */
-    public UserClient createUser(UserClient user) {
-        return user.create();
+    public UserClient createUser( User user) {
+        UserClient userClient = new UserClient();
+        return userClient.create(user);
     }
 
     /**
      * Updates an existing user using PUT (full update).
      * 
      * @param id The ID of the user to update.
-     * @param user The UserClient instance containing the new data.
+     * @param user The User model containing the new data.
      * @return The updated UserClient instance.
      */
-    public UserClient updateUser(Object id, UserClient user) {
-        if (user.getData() != null) {
-            user.getData().setId(id);
+    public UserClient updateUser(Object id, User user) {
+        if (user != null) {
+            user.setId(id);
         }
-        return user.update();
+        UserClient userClient = new UserClient();
+        return userClient.update(user);
     }
 
     /**
      * Updates an existing user using PATCH (partial update).
      * 
      * @param id The ID of the user to patch.
-     * @param user The UserClient instance containing the partial data.
+     * @param user The User model containing the partial data.
      * @return The patched UserClient instance.
      */
-    public UserClient patchUser(Object id, UserClient user) {
-        if (user.getData() != null) {
-            user.getData().setId(id);
+    public UserClient patchUser(Object id, User user) {
+        if (user != null) {
+            user.setId(id);
         }
-        return user.patch();
+        UserClient userClient = new UserClient();
+        return userClient.patch(user);
     }
 
     /**
@@ -240,6 +253,39 @@ public class RestClient extends BaseRest<Object> {
      */
     public void deleteUser(Object id) {
         new UserClient().delete(id);
+    }
+
+    /**
+     * Creates a new file entry.
+     *
+     * @param token The bearer token for authorization.
+     * @param file The File model containing the file data to create.
+     * @return The created FileClient instance.
+     */
+    public FileClient createFile(String token, File file) {
+        return new FileClient().create(token, file);
+    }
+
+    /**
+     * Updates file information using PUT (full update).
+     *
+     * @param token The bearer token for authorization.
+     * @param file The File model containing the new data.
+     * @return The updated FileClient instance.
+     */
+    public FileClient updateFile(String token, File file) {
+        return new FileClient().update(token, file);
+    }
+
+    /**
+     * Updates file information using PATCH (partial update).
+     *
+     * @param token The bearer token for authorization.
+     * @param file The File model containing the partial data.
+     * @return The patched FileClient instance.
+     */
+    public FileClient patchFile(String token, File file) {
+        return new FileClient().patch(token, file);
     }
 
     /**

@@ -13,6 +13,7 @@ public class LoginPage extends BasePage {
     private By emailField = By.name("username");
     private By passwordField = By.name("password");
     private By loginButton = By.id("loginButton");
+    private By loginError = By.xpath("//p[@data-testid=login-error][text()='Invalid username or password']");
 
     /**
      * Constructor for LoginPage.
@@ -50,6 +51,12 @@ public class LoginPage extends BasePage {
         click(loginButton);
         return new HomePage(driver);
     }
+
+
+    public LoginPage clickLoginExpectingError() {
+        click(loginButton);
+        return this;
+    }
     
     /**
      * Performs a full login operation.
@@ -61,6 +68,17 @@ public class LoginPage extends BasePage {
         return enterEmail(email)
                 .enterPassword(password)
                 .clickLogin();
+    }
+
+    public LoginPage loginWithError(String email, String password) {
+        return enterEmail(email)
+                .enterPassword(password)
+                .clickLoginExpectingError().verifyLoginErrorIsDisplayed();
+    }
+
+    public LoginPage verifyLoginErrorIsDisplayed() {
+        verifyElementDisplayed(loginError, "Login error is not displayed (Login error not found: " + loginError + ")");
+        return this;
     }
 
     /**

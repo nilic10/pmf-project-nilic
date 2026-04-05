@@ -47,7 +47,7 @@ public class BaseTest {
      * Default browser is Chrome, but can be overridden by system property 'browser'.
      */
     @BeforeEach
-    public void setUp() {
+    public void createDriver() {
         String browser = System.getProperty("browser", "chrome");
         driver = DriverFactory.getDriver(browser);
     }
