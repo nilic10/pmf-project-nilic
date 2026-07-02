@@ -10,12 +10,19 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test suite for verifying login behavior with an invalid password via Selenium.
+ * Creates a test user via REST API and attempts login with an incorrect password.
+ */
 public class LoginInvalidPasswordTest extends BaseTest {
 
     private String email;
     private final String password = "password123!";
     private User testUser;
 
+    /**
+     * Creates a unique test user via REST API before each test.
+     */
     @BeforeEach
     public void setUp() {
 
@@ -35,6 +42,9 @@ public class LoginInvalidPasswordTest extends BaseTest {
         testUser = userClient.create().getData();
     }
 
+    /**
+     * Tests that logging in with an incorrect password displays an error message.
+     */
     @Test
     @DisplayName("Login with invalid password")
     public void testLoginWithInvalidPassword() {

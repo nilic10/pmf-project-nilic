@@ -11,8 +11,16 @@ import org.junit.jupiter.api.Test;
 
 @Epic("REST API Tests")
 @Feature("User Management")
+/**
+ * Test suite for intentionally failing user creation scenarios.
+ * Demonstrates validation error behavior when required fields are missing.
+ */
 public class FailingUserTest extends RestClient {
 
+    /**
+     * Tests user creation without an email field.
+     * This test is expected to fail, demonstrating a validation error response.
+     */
     @Test
     @DisplayName("Failing User Test - Validation Error (Missing Email)")
     public void failingUserTest() {

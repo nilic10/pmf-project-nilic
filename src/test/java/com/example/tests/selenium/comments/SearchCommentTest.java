@@ -10,12 +10,19 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test suite for searching comments via the Selenium UI.
+ * Creates a test user via REST API and verifies the comment search functionality.
+ */
 public class SearchCommentTest extends BaseTest {
 
     private String email;
     private final String password = "password123!";
     private User testUser;
 
+    /**
+     * Creates a unique test user via REST API before each test.
+     */
     @BeforeEach
     public void setUp() {
 
@@ -34,6 +41,9 @@ public class SearchCommentTest extends BaseTest {
         userClient.create(testUser);
     }
 
+    /**
+     * Tests that the comments search functionality works and the comments page is displayed.
+     */
     @Test
     @DisplayName("Search for a comment via Selenium")
     public void testSearchComment() {

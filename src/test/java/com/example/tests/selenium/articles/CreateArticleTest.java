@@ -10,6 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test suite for creating articles via the Selenium UI.
+ * Creates a test user via REST API and verifies article creation through the browser interface.
+ */
 public class CreateArticleTest extends BaseTest {
 
     private String email;
@@ -17,6 +21,9 @@ public class CreateArticleTest extends BaseTest {
     private final String articleTitle = "Automated Article " + UUID.randomUUID().toString().substring(0, 5);
     private static final String articleContent = "This is a content for the automated article.";
 
+    /**
+     * Creates a unique test user via REST API before each test.
+     */
     @BeforeEach
     public void setUp() {
 
@@ -35,6 +42,10 @@ public class CreateArticleTest extends BaseTest {
         restClient.createUser(testUser);
     }
 
+    /**
+     * Tests that a new article can be created through the UI and appears in the articles list.
+     * Verifies the success message and that the article title is visible after creation.
+     */
     @Test
     @DisplayName("Create a new article via Selenium")
     public void testCreateArticle() {

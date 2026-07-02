@@ -11,6 +11,10 @@ import java.util.UUID;
 
 @Epic("REST API Tests")
 @Feature("User Management")
+/**
+ * Test suite for creating users via REST API.
+ * Verifies that a new user account can be successfully created with valid data.
+ */
 public class CreateUserTest extends RestClient {
 
     private static final String USER_FIRSTNAME = "John";
@@ -18,6 +22,10 @@ public class CreateUserTest extends RestClient {
     private static final String USER_PASSWORD = "password123";
     private static final String USER_AVATAR = "https://example.com/avatar.jpg";
 
+    /**
+     * Tests that a new user can be created with valid data.
+     * Verifies the email, first name, and last name of the created user.
+     */
     @Test
     @DisplayName("Create new user - Positive Test")
     public void createUserTest() {

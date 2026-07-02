@@ -15,12 +15,19 @@ import org.junit.jupiter.api.Assertions;
 
 import java.util.UUID;
 
+/**
+ * Test suite for verifying the "My Articles" page functionality via Selenium.
+ * Creates a test user and article via REST API, then verifies the article appears on the user's articles page.
+ */
 public class CheckMyArticlesTest extends BaseTest {
 
     private String email;
     private final String password = "password123!";
     private static ArticleClient articleClient;
 
+    /**
+     * Creates a unique test user via REST API, logs in, and creates an article before each test.
+     */
     @BeforeEach
     public void setUp() {
 
@@ -52,6 +59,10 @@ public class CheckMyArticlesTest extends BaseTest {
         articleClient = restClient.createArticle(token, newArticle);
     }
 
+    /**
+     * Tests that the user's own articles are displayed correctly on the "My Articles" page.
+     * Verifies the article title is present and the article count equals one.
+     */
     @Test
     @DisplayName("Check my articles")
     public void testCheckMyArticles() {

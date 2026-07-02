@@ -10,10 +10,17 @@ import org.springframework.web.client.HttpClientErrorException;
 
 @Epic("REST API Tests")
 @Feature("Article Management")
+/**
+ * Test suite for handling requests for non-existent articles via REST API.
+ * Verifies that the API returns a 404 Not Found response for missing resources.
+ */
 public class GetNonExistentArticleTest extends RestClient {
 
     private static final Object NON_EXISTENT_ID = 99999;
 
+    /**
+     * Tests that fetching an article with a non-existent ID throws a 404 Not Found exception.
+     */
     @Test
     @DisplayName("Get non-existent article - Negative Test")
     public void getNonExistentArticleTest() {

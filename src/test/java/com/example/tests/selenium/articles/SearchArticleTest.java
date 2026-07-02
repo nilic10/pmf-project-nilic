@@ -12,6 +12,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test suite for searching articles via the Selenium UI.
+ * Creates a test user and article via REST API, then verifies the search functionality in the browser.
+ */
 public class SearchArticleTest extends BaseTest {
 
     private String email;
@@ -20,6 +24,9 @@ public class SearchArticleTest extends BaseTest {
     private UserClient testClient;
     private String articleTitle;
 
+    /**
+     * Creates a unique test user, logs in via REST API, and creates a searchable article before each test.
+     */
     @BeforeEach
     public void setUp() {
 
@@ -52,6 +59,10 @@ public class SearchArticleTest extends BaseTest {
         restClient.createArticle(token, newArticle);
     }
 
+    /**
+     * Tests that an article can be found using the search functionality.
+     * Verifies that the searched article title appears in the results.
+     */
     @Test
     @DisplayName("Search for an article via Selenium")
     public void testSearchArticle() {

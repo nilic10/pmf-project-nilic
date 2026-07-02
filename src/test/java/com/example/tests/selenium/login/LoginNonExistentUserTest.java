@@ -10,10 +10,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test suite for verifying login behavior with a non-existent user via Selenium.
+ * Verifies that attempting to log in with an unregistered email displays an error.
+ */
 public class LoginNonExistentUserTest extends BaseTest {
 
     private final String password = "password123!";
 
+    /**
+     * Sets up a non-existent user account in the database before each test.
+     */
     @BeforeEach
     public void setUp() {
 
@@ -32,6 +39,9 @@ public class LoginNonExistentUserTest extends BaseTest {
         userClient.create(testUser);
     }
 
+    /**
+     * Tests that logging in with a non-existent user email displays an error message.
+     */
     @Test
     @DisplayName("Login with non-existent user")
     public void testLoginWithNonExistentUser() {

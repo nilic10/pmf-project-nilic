@@ -10,12 +10,19 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test suite for viewing the users page via Selenium.
+ * Creates a test user via REST API and verifies the users page is accessible.
+ */
 public class ViewUsersTest extends BaseTest {
 
     private String email;
     private final String password = "password123!";
     private User testUser;
 
+    /**
+     * Creates a unique test user via REST API before each test.
+     */
     @BeforeEach
     public void setUp() {
 
@@ -34,6 +41,9 @@ public class ViewUsersTest extends BaseTest {
         userClient.create(testUser);
     }
 
+    /**
+     * Tests that the users page is displayed after navigating to it.
+     */
     @Test
     @DisplayName("View users page")
     public void testViewUsers() {

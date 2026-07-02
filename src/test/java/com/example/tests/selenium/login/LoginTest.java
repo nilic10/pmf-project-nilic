@@ -10,12 +10,19 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test suite for verifying successful login via Selenium.
+ * Creates a test user via REST API and verifies that login succeeds with a welcome message.
+ */
 public class LoginTest extends BaseTest {
 
     private String email;
     private final String password = "password123!";
     private User testUser;
 
+    /**
+     * Creates a unique test user via REST API before each test.
+     */
     @BeforeEach
     public void setUp() {
 
@@ -34,6 +41,9 @@ public class LoginTest extends BaseTest {
         userClient.create(testUser);
     }
 
+    /**
+     * Tests that a registered user can successfully log in and is greeted by their email on the home page.
+     */
     @Test
     @DisplayName("Login with newly created user via REST")
     public void testLogin() {

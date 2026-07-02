@@ -15,6 +15,10 @@ import java.util.UUID;
 
 @Epic("REST API Tests")
 @Feature("Article Management")
+/**
+ * Test suite for creating articles via REST API.
+ * Verifies that a new article can be successfully created by an authenticated user.
+ */
 public class CreateArticleTest extends RestClient {
 
     private static final String DEFAULT_PASSWORD = "password1!";
@@ -27,6 +31,9 @@ public class CreateArticleTest extends RestClient {
     private UserClient testUser;
     private String token;
 
+    /**
+     * Creates a unique test user and retrieves an authentication token before each test.
+     */
     @BeforeEach
     public void setup() {
         String uniqueEmail = "testuser_" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
@@ -44,6 +51,10 @@ public class CreateArticleTest extends RestClient {
         token = login(uniqueEmail, DEFAULT_PASSWORD);
     }
 
+    /**
+     * Tests that a new article can be created with valid data by an authenticated user.
+     * Verifies the title, body, and user ID of the created article.
+     */
     @Test
     @DisplayName("Create new article - Positive Test")
     public void createArticleTest() {

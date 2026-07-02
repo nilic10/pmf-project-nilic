@@ -10,12 +10,19 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test suite for verifying logout functionality via Selenium.
+ * Creates a test user via REST API, logs in, and verifies the logout process.
+ */
 public class LogoutTest extends BaseTest {
 
     private String email;
     private final String password = "password123!";
     private User testUser;
 
+    /**
+     * Creates a unique test user via REST API before each test.
+     */
     @BeforeEach
     public void setUp() {
 
@@ -34,6 +41,9 @@ public class LogoutTest extends BaseTest {
         userClient.create(testUser);
     }
 
+    /**
+     * Tests that a logged-in user can successfully log out and is redirected to the login page.
+     */
     @Test
     @DisplayName("Logout from the application")
     public void testLogout() {

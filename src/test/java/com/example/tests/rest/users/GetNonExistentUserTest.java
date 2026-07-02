@@ -10,10 +10,17 @@ import org.springframework.web.client.HttpClientErrorException;
 
 @Epic("REST API Tests")
 @Feature("User Management")
+/**
+ * Test suite for handling requests for non-existent users via REST API.
+ * Verifies that the API returns a 404 Not Found response for missing user resources.
+ */
 public class GetNonExistentUserTest extends RestClient {
 
     private static final Object NON_EXISTENT_ID = 99999;
 
+    /**
+     * Tests that fetching a user with a non-existent ID throws a 404 Not Found exception.
+     */
     @Test
     @DisplayName("Get non-existent user - Negative Test")
     public void getNonExistentUserTest() {

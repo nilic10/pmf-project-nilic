@@ -15,6 +15,10 @@ import java.util.UUID;
 
 @Epic("REST API Tests")
 @Feature("Comment Management")
+/**
+ * Test suite for creating comments via REST API.
+ * Verifies that a new comment can be successfully created by an authenticated user on an existing article.
+ */
 public class CreateCommentTest extends RestClient {
 
     private static final String DEFAULT_PASSWORD = "password1!";
@@ -26,6 +30,9 @@ public class CreateCommentTest extends RestClient {
     private UserClient testUser;
     private String token;
 
+    /**
+     * Creates a unique test user and retrieves an authentication token before each test.
+     */
     @BeforeEach
     public void setup() {
         String uniqueEmail = "testuser_" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
@@ -43,6 +50,10 @@ public class CreateCommentTest extends RestClient {
         token = login(uniqueEmail, DEFAULT_PASSWORD);
     }
 
+    /**
+     * Tests that a new comment can be created with valid data by an authenticated user.
+     * Verifies the body, article ID, and user ID of the created comment.
+     */
     @Test
     @DisplayName("Create new comment - Positive Test")
     public void createCommentTest() {
