@@ -63,6 +63,9 @@ public class DriverFactory {
                             .enableHarCaptureTypes();
                     options.setProxy(seleniumProxy);
                     options.addArguments("--ignore-certificate-errors");
+                    // Chrome bypasses the proxy for loopback addresses (localhost/127.0.0.1) by default,
+                    // which would exclude the app under test from the HAR capture.
+                    options.addArguments("--proxy-bypass-list=<-loopback>");
                 }
                 driver = new ChromeDriver(options);
                 break;

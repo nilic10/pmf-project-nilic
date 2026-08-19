@@ -47,7 +47,7 @@ public class ViewUsersTest extends BaseTest {
     @Test
     @DisplayName("View users page")
     public void testViewUsers() {
-        driver.get("http://localhost:3000/login");
+        openApp();
         
         new LoginPage(driver)
                 .login(email, password)

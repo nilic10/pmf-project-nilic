@@ -47,7 +47,7 @@ public class ViewStatisticsTest extends BaseTest {
     @Test
     @DisplayName("View statistics page")
     public void testViewStatistics() {
-        driver.get("http://localhost:3000/login");
+        openApp();
         
         new LoginPage(driver)
                 .login(email, password)

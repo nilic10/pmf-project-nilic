@@ -16,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
+import com.example.AppConfig;
+
 /**
  * Base class for all REST client implementations.
  * Provides core functionality for making HTTP requests using RestTemplate.
@@ -73,7 +75,7 @@ public abstract class BaseRest<T> {
     /**
      * Default base URL for the REST API.
      */
-    public static final String DEFAULT_BASE_URL = "http://localhost:3000/api";
+    public static final String DEFAULT_BASE_URL = AppConfig.APP_URL + "/api";
 
     /**
      * Retrieves the base URL from system properties or returns the default.

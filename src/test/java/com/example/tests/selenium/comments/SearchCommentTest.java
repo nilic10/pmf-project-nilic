@@ -47,7 +47,7 @@ public class SearchCommentTest extends BaseTest {
     @Test
     @DisplayName("Search for a comment via Selenium")
     public void testSearchComment() {
-        driver.get("http://localhost:3000/login");
+        openApp();
         
         new LoginPage(driver)
                 .login(email, password)

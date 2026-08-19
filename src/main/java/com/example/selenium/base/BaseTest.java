@@ -1,5 +1,6 @@
 package com.example.selenium.base;
 
+import com.example.AppConfig;
 import com.example.selenium.utils.BrowserMobProxyServiceCreator;
 import com.example.selenium.utils.DriverFactory;
 import io.qameta.allure.Allure;
@@ -41,6 +42,13 @@ public class BaseTest {
             }
         }
     };
+
+    /**
+     * Navigates the browser to the application login page.
+     */
+    public void openApp() {
+        driver.get(AppConfig.APP_URL + "/login");
+    }
 
     /**
      * Setup method to initialize WebDriver before each test.
@@ -85,14 +93,16 @@ public class BaseTest {
      * Captures the HAR file and attaches it to the Allure report.
      */
     public void saveHar(String fileName) {
-        Har har = BrowserMobProxyServiceCreator.getInstance().getHar();
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-            har.writeTo(bos);
-            har.writeTo(new File("target/" + fileName));
-            Allure.addAttachment("network-log.har", "application/json", new ByteArrayInputStream(bos.toByteArray()), ".har");
-            System.out.println("[DEBUG_LOG] HAR file added to Allure");
-        } catch (IOException e) {
-            System.err.println("[DEBUG_LOG] Failed to save HAR file: " + e.getMessage());
+        if (BrowserMobProxyServiceCreator.getService() != null) {
+            Har har = BrowserMobProxyServiceCreator.getInstance().getHar();
+            try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                har.writeTo(bos);
+                har.writeTo(new File("target/" + fileName));
+                Allure.addAttachment("network-log.har", "application/json", new ByteArrayInputStream(bos.toByteArray()), ".har");
+                System.out.println("[DEBUG_LOG] HAR file added to Allure");
+            } catch (IOException e) {
+                System.err.println("[DEBUG_LOG] Failed to save HAR file: " + e.getMessage());
+            }
         }
     }
     public void stopBrowserMobProxyService() {

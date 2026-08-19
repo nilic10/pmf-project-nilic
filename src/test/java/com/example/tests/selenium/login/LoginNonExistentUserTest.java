@@ -45,7 +45,7 @@ public class LoginNonExistentUserTest extends BaseTest {
     @Test
     @DisplayName("Login with non-existent user")
     public void testLoginWithNonExistentUser() {
-        driver.get("http://localhost:3000/login");
+        openApp();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.loginWithError("does_not_exist@example.com", password);

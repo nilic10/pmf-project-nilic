@@ -13,7 +13,7 @@ public class LoginPage extends BasePage {
     private By emailField = By.name("username");
     private By passwordField = By.name("password");
     private By loginButton = By.id("loginButton");
-    private By loginError = By.xpath("//p[@data-testid=login-error][text()='Invalid username or password']");
+    private By loginError = By.xpath("//p[@data-testid='login-error'][text()='Invalid username or password']");
 
     /**
      * Constructor for LoginPage.

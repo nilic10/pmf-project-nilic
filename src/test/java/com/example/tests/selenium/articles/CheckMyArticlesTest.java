@@ -66,7 +66,7 @@ public class CheckMyArticlesTest extends BaseTest {
     @Test
     @DisplayName("Check my articles")
     public void testCheckMyArticles() {
-        driver.get("http://localhost:3000/login");
+        openApp();
         
         new LoginPage(driver)
                 .login(email, password)

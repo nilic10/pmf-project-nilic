@@ -48,7 +48,7 @@ public class LoginInvalidPasswordTest extends BaseTest {
     @Test
     @DisplayName("Login with invalid password")
     public void testLoginWithInvalidPassword() {
-        driver.get("http://localhost:3000/login");
+        openApp();
         
         LoginPage loginPage = new LoginPage(driver);
         loginPage.loginWithError(email, "wrong_password");

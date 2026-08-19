@@ -5,16 +5,17 @@ import com.example.rest.models.User;
 import com.example.selenium.base.BaseTest;
 import com.example.selenium.pages.LoginPage;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 /**
- * Test suite for creating articles via the Selenium UI.
- * Creates a test user via REST API and verifies article creation through the browser interface.
+ * Test suite for verifying that the article form is not vulnerable to XSS injection.
+ * Creates a test user via REST API and attempts to inject script tags through the UI.
  */
-public class CreateArticleTest extends BaseTest {
+public class XssCreateArticleInjectionTest extends BaseTest {
 
     private String email;
     private final String password = "password123!";
@@ -43,29 +44,28 @@ public class CreateArticleTest extends BaseTest {
     }
 
     /**
-     * Tests that a new article can be created through the UI and appears in the articles list.
-     * Verifies the success message and that the article title is visible after creation.
+     * Tests that injecting a script tag into the article title field does not result in script execution.
+     * Verifies that the raw payload is not rendered as executable HTML in the page source.
      */
     @Test
-    @DisplayName("Create a new article via Selenium")
-    public void testCreateArticle() {
+    public void injectingScriptTagIntoArticleTitleShouldNotBeExecuted() {
+        LoginPage loginPage = new LoginPage(driver);
 
-        newHar();
-
-        openApp();
-
-        new LoginPage(driver)
-                .login(email, password)
+        loginPage.login(email, password)
                 .goToArticles()
                 .addArticle()
-                .enterTitle(articleTitle)
-                .enterContent(articleContent)
+                .enterTitle("<script>alert('XSS')</script>")
+                .enterContent("Test sadržaj članka")
                 .clickSave()
                 .verifySuccessMessage("Article created!")
-                .verifyArticleWithTitleExists(articleTitle);
+                .verifyArticleWithTitleExists("<script>alert('XSS')</script>");
 
-        saveHar("create-article-traffic.har");
+        boolean payloadRenderedAsScript =
+                driver.getPageSource().contains("<script>alert('XSS')</script>");
+
+        assertFalse(payloadRenderedAsScript,
+                "Article title field is vulnerable to XSS attack");
     }
 
-    
+
 }

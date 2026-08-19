@@ -47,7 +47,7 @@ public class ViewArticlesTest extends BaseTest {
     @Test
     @DisplayName("View articles page")
     public void testViewArticles() {
-        driver.get("http://localhost:3000/login");
+        openApp();
         
         new LoginPage(driver)
                 .login(email, password)

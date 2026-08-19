@@ -45,13 +45,18 @@ public class LoginTest extends BaseTest {
      * Tests that a registered user can successfully log in and is greeted by their email on the home page.
      */
     @Test
-    @DisplayName("Login with newly created user via REST")
+    @DisplayName("Login with newly created user")
     public void testLogin() {
-        driver.get("http://localhost:3000/login");
-        
+
+        newHar();
+
+        openApp();
+
         new LoginPage(driver)
                 .login(email, password)
                 .verifyHomePageIsDisplayed()
                 .verifyWelcomeMessage("Hi " + email + "!");
+
+        saveHar("login-traffic.har");
     }
 }

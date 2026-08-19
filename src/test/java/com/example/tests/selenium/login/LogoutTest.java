@@ -47,7 +47,7 @@ public class LogoutTest extends BaseTest {
     @Test
     @DisplayName("Logout from the application")
     public void testLogout() {
-        driver.get("http://localhost:3000/login");
+        openApp();
         
         new LoginPage(driver)
                 .login(email, password)

@@ -66,7 +66,7 @@ public class SearchArticleTest extends BaseTest {
     @Test
     @DisplayName("Search for an article via Selenium")
     public void testSearchArticle() {
-        driver.get("http://localhost:3000/login");
+        openApp();
         
         new LoginPage(driver)
                 .login(email, password)

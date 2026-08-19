@@ -47,7 +47,7 @@ public class ViewCommentsTest extends BaseTest {
     @Test
     @DisplayName("View comments page")
     public void testViewComments() {
-        driver.get("http://localhost:3000/login");
+        openApp();
         
         new LoginPage(driver)
                 .login(email, password)

@@ -123,12 +123,14 @@ src/
 │           └── BrowserMobProxyServiceCreator.java  # BrowserMob Proxy management
 └── test/java/com/example/tests/
     ├── rest/
+    │   ├── SqlInjectionLoginTest.java  # Security test for the login endpoint
     │   ├── articles/     # REST tests for articles
     │   ├── comments/     # REST tests for comments
     │   ├── users/        # REST tests for users
     │   └── files/        # REST tests for files
     └── selenium/
         ├── articles/     # UI tests for articles
+        │   └── XssCreateArticleInjectionTest.java  # Security test for the article form
         ├── comments/     # UI tests for comments
         ├── login/        # UI tests for login/logout
         ├── statistics/   # UI tests for statistics
@@ -261,6 +263,7 @@ All REST tests extend `RestClient` and use `@Epic` / `@Feature` Allure annotatio
 | `CreateCommentTest` | Positive | Creates a user and a comment, verifies body, article ID, and author ID |
 | `GetCommentByIdTest` | Positive | Fetches comment with ID=1, verifies ID and body text |
 | `DeleteCommentWithoutAuthTest` | Negative | Expects `401 Unauthorized` when deleting without a token |
+| `XssCreateCommentInjectionTest` | Security | Creates a comment with an XSS script tag payload, verifies the stored body is sanitized |
 | `FailingCommentTest` | Failing | Fetches a non-existent comment without expecting an exception (intentionally fails) |
 | `FailingDeleteCommentTest` | Failing | Deletes a comment without a token without expecting an exception (intentionally fails) |
 
@@ -280,6 +283,12 @@ All REST tests extend `RestClient` and use `@Epic` / `@Feature` Allure annotatio
 | Test Class | Type | Description |
 |---|---|---|
 | `GetPublicFilesTest` | Negative | Expects `404 Not Found` for the public files endpoint |
+
+### Security
+
+| Test Class | Type | Description |
+|---|---|---|
+| `SqlInjectionLoginTest` | Security | Sends a SQL injection payload (`admin' OR '1'='1`) in the login username, verifies `401 Unauthorized` is returned |
 
 ---
 
@@ -363,6 +372,7 @@ All Selenium tests extend `BaseTest`. Test users are created via the REST API in
 | `SearchArticleTest` | Creates an article via API, searches for it in the UI, and verifies the search result |
 | `CreateArticleTest` | Creates an article via the UI form, verifies the success message and that it appears in the list |
 | `CheckMyArticlesTest` | Creates an article via API, navigates to "My Articles", and verifies the article is shown with the correct count |
+| `XssCreateArticleInjectionTest` | Creates an article with an XSS script tag payload in the title via the UI form, verifies the payload is not rendered as executable HTML |
 
 ### Comments
 
@@ -435,10 +445,25 @@ Run with an HTTP proxy:
 mvn test -Dproxy=localhost:8080
 ```
 
+> **Note:** When running tests with the `-Dproxy` option, **OWASP ZAP** must be running and listening on the specified port before the tests are started. ZAP acts as the intercepting proxy that captures and inspects HTTP traffic.
+>
+> To start ZAP on the default port (`8080`), launch it via the ZAP GUI or use the daemon mode:
+> ```bash
+> zap.sh -daemon -port 8080
+> ```
+> Make sure the port in the `-Dproxy` argument matches the port ZAP is configured to listen on.
+
 Run with BrowserMob Proxy (HAR capture):
 ```bash
 mvn test -DbrowserMobProxy=true
 ```
+
+Run tests in parallel forks (multiple JVM processes):
+```bash
+mvn test -DforkCount=4 -DreuseForks=false
+```
+
+> **Note:** `forkCount` controls how many JVM processes Maven Surefire runs concurrently — each fork executes a subset of test classes independently, which is especially useful for the Selenium suite where each fork opens its own browser instance. `reuseForks=false` ensures each test class starts in a clean JVM instead of reusing one across classes. `forkCount` can also be set as a percentage of available CPU cores, e.g. `-DforkCount=1C`.
 
 ---
 
@@ -470,6 +495,8 @@ On a failed Selenium test, a screenshot is automatically attached to the report.
 | `gridUrl` | `http://localhost:4444/wd/hub` | Selenium Grid URL for remote execution |
 | `proxy` | — | HTTP proxy server address (e.g. `localhost:8080`) |
 | `browserMobProxy` | — | Enables BrowserMob Proxy for network traffic capture |
+| `forkCount` | `1` | Number of parallel JVM processes Maven Surefire uses to run test classes (e.g. `4` or `1C` for one per CPU core) |
+| `reuseForks` | `true` | Whether a forked JVM is reused across test classes; set to `false` for full test isolation between classes |
 
 ---
 
